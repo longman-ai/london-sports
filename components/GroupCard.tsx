@@ -9,7 +9,7 @@ export default function GroupCard({ group }: GroupCardProps) {
   const buttonLabel = group.isVenue ? 'Check Availability' : 'Join Group';
 
   return (
-    <div className="group bg-white rounded-xl border-2 border-slate-200 p-6 hover:border-blue-500 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+    <div className="group bg-white rounded-xl border-2 border-slate-200 p-6 hover:border-blue-500 hover:shadow-lg hover:-translate-y-1 active:translate-y-0 transition-all duration-300 cursor-pointer">
       <div className="flex flex-col gap-4">
         <div>
           <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">

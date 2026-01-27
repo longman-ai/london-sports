@@ -81,33 +81,40 @@ export default async function SportBoroughPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50">
-      {/* Header with back link */}
-      <header className="bg-white border-b border-slate-200 shadow-sm">
+      {/* Header with back link - optimized for mobile thumb zone */}
+      <header className="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50 backdrop-blur-sm bg-white/95">
         <div className="max-w-7xl mx-auto px-6 md:px-8 py-4">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors"
+            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors touch-manipulation min-h-[44px]"
           >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            Back to all sports
+            <span>Back to all sports</span>
           </Link>
         </div>
       </header>
 
       <main className="max-w-7xl mx-auto px-6 md:px-8 py-12 md:py-16">
-        {/* Hero Section */}
+        {/* Hero Section - Enhanced for mobile */}
         <div className="text-center mb-16">
-          <div className="mb-3">
-            <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-4 py-2 rounded-full">
-              📍 Viewing: {formatBoroughName(parsed.borough)}
+          <div className="mb-4 flex items-center justify-center gap-3">
+            <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-4 py-2 rounded-full border border-blue-200">
+              📍 {formatBoroughName(parsed.borough)}
+            </span>
+            <span className="text-sm font-semibold text-green-700 bg-green-50 px-4 py-2 rounded-full border border-green-200">
+              🟢 {groups.length} Active {groups.length === 1 ? 'Group' : 'Groups'}
             </span>
           </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4 px-4">
             {sport.displayName} <span className="text-blue-600">in London</span>
           </h1>
-          <p className="text-lg md:text-xl text-slate-600 mb-8">{content.tagline}</p>
+          <div className="flex justify-center">
+            <p className="text-lg md:text-xl text-slate-600 mb-8 max-w-2xl px-4 text-center">
+              {content.tagline}
+            </p>
+          </div>
 
           {/* Sport-specific emphasis tags */}
           <div className="flex flex-wrap gap-3 justify-center mb-10">
@@ -121,18 +128,18 @@ export default async function SportBoroughPage({ params }: PageProps) {
             ))}
           </div>
 
-          {/* Available Locations */}
-          <div className="max-w-4xl mx-auto">
-            <p className="text-sm font-semibold text-slate-700 mb-4">Available in these locations:</p>
-            <div className="flex flex-wrap gap-2 justify-center">
+          {/* Available Locations - Mobile optimized */}
+          <div className="max-w-4xl mx-auto px-4">
+            <p className="text-sm font-semibold text-slate-700 mb-4">Switch location:</p>
+            <div className="flex flex-wrap gap-3 justify-center">
               {BOROUGHS.map((borough) => (
                 <Link
                   key={borough.id}
                   href={`/${sport.name}-${borough.name}`}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  className={`px-5 py-3 rounded-lg text-sm font-medium transition-all touch-manipulation min-h-[44px] flex items-center ${
                     borough.name === parsed.borough
-                      ? 'bg-blue-600 text-white shadow-md'
-                      : 'bg-white text-slate-700 border-2 border-slate-200 hover:border-blue-400 hover:shadow-sm'
+                      ? 'bg-blue-600 text-white shadow-lg'
+                      : 'bg-white text-slate-700 border-2 border-slate-200 hover:border-blue-400 hover:shadow-md active:scale-95'
                   }`}
                 >
                   {borough.displayName}
