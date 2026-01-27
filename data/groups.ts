@@ -11,6 +11,7 @@ export interface Group {
   level: string;
   description: string;
   contact: string; // WhatsApp link or placeholder
+  sourceUrl: string; // Original page where info was scraped from
   isVenue?: boolean; // True for padel/tennis/badminton venues
 }
 
@@ -27,6 +28,7 @@ export const GROUPS: Group[] = [
     level: 'All levels welcome',
     description: 'Premium indoor padel courts available for booking. Regular social sessions and tournaments.',
     contact: 'https://chat.whatsapp.com/placeholder',
+    sourceUrl: 'https://example.com/paddington-padel-club',
     isVenue: true
   },
   {
@@ -39,6 +41,7 @@ export const GROUPS: Group[] = [
     level: 'Beginners to Advanced',
     description: 'Weekly social padel sessions. Great for meeting new players and improving your game.',
     contact: 'https://chat.whatsapp.com/placeholder',
+    sourceUrl: 'https://example.com/victoria-padel-social',
     isVenue: true
   },
 
@@ -52,7 +55,8 @@ export const GROUPS: Group[] = [
     area: 'Hackney Downs',
     level: 'Casual, all abilities',
     description: 'Friendly 5-a-side every Friday evening. Just turn up and play!',
-    contact: 'https://chat.whatsapp.com/placeholder'
+    contact: 'https://chat.whatsapp.com/placeholder',
+    sourceUrl: 'https://example.com/hackney-5-a-side-fridays'
   },
   {
     id: 'football-hackney-2',
@@ -63,7 +67,8 @@ export const GROUPS: Group[] = [
     area: 'Shoreditch',
     level: 'Intermediate',
     description: 'Competitive 7-a-side league on Sunday mornings. Looking for regular players.',
-    contact: 'https://chat.whatsapp.com/placeholder'
+    contact: 'https://chat.whatsapp.com/placeholder',
+    sourceUrl: 'https://example.com/shoreditch-sunday-league'
   },
 
   // BASKETBALL - Hackney
@@ -76,7 +81,8 @@ export const GROUPS: Group[] = [
     area: 'Stoke Newington',
     level: 'Open to all',
     description: 'Outdoor pickup games every Saturday and Sunday morning. All skill levels welcome.',
-    contact: 'https://chat.whatsapp.com/placeholder'
+    contact: 'https://chat.whatsapp.com/placeholder',
+    sourceUrl: 'https://example.com/clissold-park-pickup'
   },
   {
     id: 'basketball-hackney-2',
@@ -87,7 +93,8 @@ export const GROUPS: Group[] = [
     area: 'Shoreditch',
     level: 'All levels',
     description: 'Indoor basketball sessions Wednesday evenings. Organized games and drills.',
-    contact: 'https://chat.whatsapp.com/placeholder'
+    contact: 'https://chat.whatsapp.com/placeholder',
+    sourceUrl: 'https://example.com/hackney-hoops-indoor'
   },
 
   // TENNIS - Kensington & Chelsea
@@ -101,6 +108,7 @@ export const GROUPS: Group[] = [
     level: 'Members & non-members',
     description: 'Premium tennis courts available for hire. Coaching and social sessions available.',
     contact: 'https://chat.whatsapp.com/placeholder',
+    sourceUrl: 'https://example.com/holland-park-tennis-club',
     isVenue: true
   },
   {
@@ -113,6 +121,7 @@ export const GROUPS: Group[] = [
     level: 'Intermediate to Advanced',
     description: 'Weekly social tennis sessions. Meet new players and improve your game.',
     contact: 'https://chat.whatsapp.com/placeholder',
+    sourceUrl: 'https://example.com/chelsea-tennis-social',
     isVenue: true
   },
 
@@ -127,6 +136,7 @@ export const GROUPS: Group[] = [
     level: 'All levels',
     description: 'Drop-in badminton sessions every Tuesday and Thursday evening. No booking required.',
     contact: 'https://chat.whatsapp.com/placeholder',
+    sourceUrl: 'https://example.com/camden-badminton-drop-in',
     isVenue: true
   },
   {
@@ -139,6 +149,7 @@ export const GROUPS: Group[] = [
     level: 'Beginners welcome',
     description: 'Friendly community badminton sessions on weekends. Equipment provided.',
     contact: 'https://chat.whatsapp.com/placeholder',
+    sourceUrl: 'https://example.com/swiss-cottage-badminton',
     isVenue: true
   },
 
@@ -152,7 +163,8 @@ export const GROUPS: Group[] = [
     area: 'Highbury',
     level: 'Beginner friendly',
     description: 'Social running group meeting every Wednesday at 6:30pm. All paces welcome, we run in groups.',
-    contact: 'https://chat.whatsapp.com/placeholder'
+    contact: 'https://chat.whatsapp.com/placeholder',
+    sourceUrl: 'https://example.com/highbury-fields-runners'
   },
   {
     id: 'running-islington-2',
@@ -163,7 +175,8 @@ export const GROUPS: Group[] = [
     area: 'Angel',
     level: '5-6 min/km pace',
     description: 'Pace-focused running group for those looking to improve speed. Tuesdays and Saturdays.',
-    contact: 'https://chat.whatsapp.com/placeholder'
+    contact: 'https://chat.whatsapp.com/placeholder',
+    sourceUrl: 'https://example.com/angel-pace-group'
   },
 
   // PADEL - Lambeth
@@ -177,6 +190,7 @@ export const GROUPS: Group[] = [
     level: 'All levels',
     description: 'New padel facility with 4 courts. Book online or join our regular social sessions.',
     contact: 'https://chat.whatsapp.com/placeholder',
+    sourceUrl: 'https://example.com/clapham-padel-club',
     isVenue: true
   },
 
@@ -190,7 +204,8 @@ export const GROUPS: Group[] = [
     area: 'Regent\'s Park',
     level: 'All abilities',
     description: 'Casual 5-a-side games every weekday evening. Mixed ability, friendly atmosphere.',
-    contact: 'https://chat.whatsapp.com/placeholder'
+    contact: 'https://chat.whatsapp.com/placeholder',
+    sourceUrl: 'https://example.com/regents-park-5-a-side'
   },
 
   // Add more groups to ensure all sport-borough combinations have data

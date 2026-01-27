@@ -30,10 +30,15 @@ export default function GroupCard({ group }: GroupCardProps) {
           {group.description}
         </p>
 
-        <div className="pt-2">
+        <div className="pt-2 flex flex-col sm:flex-row gap-3">
           <JoinButton
             contact={group.contact}
             label={buttonLabel}
+          />
+          <JoinButton
+            contact={group.sourceUrl}
+            label="Learn More"
+            variant="secondary"
           />
         </div>
       </div>
