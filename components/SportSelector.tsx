@@ -20,6 +20,24 @@ const sportCaptions: Record<string, string> = {
   padel: 'Fastest growing'
 };
 
+const sportStatus: Record<string, { label: string; color: string }> = {
+  football: { label: '🟢 Active groups', color: 'bg-green-50 text-green-700 border-green-200' },
+  basketball: { label: '🟢 Active groups', color: 'bg-green-50 text-green-700 border-green-200' },
+  tennis: { label: '🔥 Popular this week', color: 'bg-orange-50 text-orange-700 border-orange-200' },
+  badminton: { label: '🟢 Active groups', color: 'bg-green-50 text-green-700 border-green-200' },
+  running: { label: '🔥 Popular this week', color: 'bg-orange-50 text-orange-700 border-orange-200' },
+  padel: { label: '🔥 Popular this week', color: 'bg-orange-50 text-orange-700 border-orange-200' }
+};
+
+const sportAction: Record<string, string> = {
+  football: 'Games this week',
+  basketball: 'Join today',
+  tennis: 'Courts available',
+  badminton: 'Join today',
+  running: 'Groups starting soon',
+  padel: 'Book now'
+};
+
 export default function SportSelector() {
   return (
     <div className="w-full max-w-7xl mx-auto px-6 md:px-8">
@@ -28,10 +46,17 @@ export default function SportSelector() {
           <Link
             key={sport.id}
             href={`/${sport.name}-${BOROUGHS[0].name}`}
-            className="group relative bg-white rounded-xl border-2 border-slate-200 p-8 hover:border-blue-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 min-h-[180px] flex flex-col justify-center items-center text-center"
+            className="group relative bg-white rounded-xl border-2 border-slate-200 p-8 hover:border-blue-500 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 min-h-[200px] flex flex-col justify-center items-center text-center"
           >
+            {/* Status Tag */}
+            <div className="absolute top-3 left-3">
+              <span className={`text-xs font-semibold px-2 py-1 rounded-full border ${sportStatus[sport.id].color}`}>
+                {sportStatus[sport.id].label}
+              </span>
+            </div>
+
             {/* Sport Icon */}
-            <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">
+            <div className="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">
               {sportIcons[sport.id]}
             </div>
 
@@ -41,9 +66,14 @@ export default function SportSelector() {
             </h3>
 
             {/* Caption */}
-            <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+            <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full mb-2">
               {sportCaptions[sport.id]}
             </span>
+
+            {/* Action Text */}
+            <p className="text-xs text-slate-500 font-medium mt-1">
+              {sportAction[sport.id]}
+            </p>
 
             {/* Hover indicator */}
             <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
