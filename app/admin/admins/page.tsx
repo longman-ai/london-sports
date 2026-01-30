@@ -1,6 +1,7 @@
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
+import type { Admin } from "@prisma/client"
 
 export default async function AdminsPage() {
   const session = await auth()
@@ -124,7 +125,7 @@ export default async function AdminsPage() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {admins.map((admin) => (
+                {admins.map((admin: Admin) => (
                   <tr key={admin.id}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
