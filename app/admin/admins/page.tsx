@@ -1,7 +1,6 @@
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
-import type { Admin } from "@prisma/client"
 
 export default async function AdminsPage() {
   const session = await auth()
@@ -12,6 +11,8 @@ export default async function AdminsPage() {
   const admins = await prisma.admin.findMany({
     orderBy: { createdAt: "desc" },
   })
+
+  type Admin = typeof admins[number]
 
   return (
     <div className="min-h-screen bg-gray-50">
