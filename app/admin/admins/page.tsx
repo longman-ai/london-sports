@@ -153,7 +153,7 @@ export default async function AdminsPage() {
                       {new Date(admin.createdAt).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      {session.user.email !== admin.email && (
+                      {session.user?.email !== admin.email && (
                         <form
                           action={`/api/admin/admins/${admin.id}/delete`}
                           method="POST"
@@ -176,7 +176,7 @@ export default async function AdminsPage() {
                           </button>
                         </form>
                       )}
-                      {session.user.email === admin.email && (
+                      {session.user?.email === admin.email && (
                         <span className="text-gray-400">Current User</span>
                       )}
                     </td>
