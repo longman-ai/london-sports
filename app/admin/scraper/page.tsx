@@ -36,16 +36,26 @@ export default async function ScraperPage() {
             Quick Start: Seed Sample Data
           </h2>
           <p className="text-sm text-green-700 mb-4">
-            Instantly populate your database with 12 realistic London sports groups. Perfect for testing or getting started quickly.
+            Instantly populate your database with realistic London sports groups. Perfect for testing or getting started quickly.
           </p>
-          <form action="/api/admin/scraper/meetup?seed=true" method="POST">
-            <button
-              type="submit"
-              className="px-6 py-3 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 shadow-sm"
-            >
-              Seed Sample Data (12 Groups)
-            </button>
-          </form>
+          <div className="flex flex-wrap gap-3">
+            <form action="/api/admin/scraper/meetup?seed=true" method="POST">
+              <button
+                type="submit"
+                className="px-6 py-3 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 shadow-sm"
+              >
+                Seed Meetup Data (12 Groups)
+              </button>
+            </form>
+            <form action="/api/admin/scraper/facebook?seed=true" method="POST">
+              <button
+                type="submit"
+                className="px-6 py-3 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 shadow-sm"
+              >
+                Seed Facebook Data (10 Groups)
+              </button>
+            </form>
+          </div>
         </div>
 
         <div className="bg-white shadow rounded-lg p-6 mb-6">
@@ -76,7 +86,7 @@ export default async function ScraperPage() {
                 </button>
               </form>
               <p className="mt-2 text-xs text-gray-500">
-                Requires Facebook Graph API access
+                Requires FACEBOOK_ACCESS_TOKEN (uses Places Search API)
               </p>
             </div>
           </div>
