@@ -55,6 +55,14 @@ export default async function ScraperPage() {
                 Seed Facebook Data (10 Groups)
               </button>
             </form>
+            <form action="/api/admin/scraper/google?seed=true" method="POST">
+              <button
+                type="submit"
+                className="px-6 py-3 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 shadow-sm"
+              >
+                Seed Google Data (10 Groups)
+              </button>
+            </form>
           </div>
         </div>
 
@@ -62,7 +70,7 @@ export default async function ScraperPage() {
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
             Run Live Scrapers
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <form action="/api/admin/scraper/meetup" method="POST">
                 <button
@@ -73,7 +81,7 @@ export default async function ScraperPage() {
                 </button>
               </form>
               <p className="mt-2 text-xs text-gray-500">
-                Requires MEETUP_ACCESS_TOKEN environment variable
+                Requires MEETUP_ACCESS_TOKEN
               </p>
             </div>
             <div>
@@ -86,7 +94,20 @@ export default async function ScraperPage() {
                 </button>
               </form>
               <p className="mt-2 text-xs text-gray-500">
-                Requires FACEBOOK_ACCESS_TOKEN (uses Places Search API)
+                Requires FACEBOOK_ACCESS_TOKEN
+              </p>
+            </div>
+            <div>
+              <form action="/api/admin/scraper/google" method="POST">
+                <button
+                  type="submit"
+                  className="w-full px-4 py-3 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                >
+                  Run Google Scraper
+                </button>
+              </form>
+              <p className="mt-2 text-xs text-gray-500">
+                Requires GOOGLE_API_KEY
               </p>
             </div>
           </div>
