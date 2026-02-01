@@ -30,30 +30,58 @@ export default async function ScraperPage() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Quick Seed Section */}
+        <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 shadow rounded-lg p-6 mb-6">
+          <h2 className="text-lg font-semibold text-green-900 mb-2">
+            Quick Start: Seed Sample Data
+          </h2>
+          <p className="text-sm text-green-700 mb-4">
+            Instantly populate your database with 12 realistic London sports groups. Perfect for testing or getting started quickly.
+          </p>
+          <form action="/api/admin/scraper/meetup?seed=true" method="POST">
+            <button
+              type="submit"
+              className="px-6 py-3 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 shadow-sm"
+            >
+              Seed Sample Data (12 Groups)
+            </button>
+          </form>
+        </div>
+
         <div className="bg-white shadow rounded-lg p-6 mb-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            Run New Scraper
+            Run Live Scrapers
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <form action="/api/admin/scraper/meetup" method="POST">
-              <button
-                type="submit"
-                className="w-full px-4 py-3 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
-              >
-                Run Meetup Scraper
-              </button>
-            </form>
-            <form action="/api/admin/scraper/facebook" method="POST">
-              <button
-                type="submit"
-                className="w-full px-4 py-3 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
-              >
-                Run Facebook Scraper
-              </button>
-            </form>
+            <div>
+              <form action="/api/admin/scraper/meetup" method="POST">
+                <button
+                  type="submit"
+                  className="w-full px-4 py-3 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                >
+                  Run Meetup Scraper
+                </button>
+              </form>
+              <p className="mt-2 text-xs text-gray-500">
+                Requires MEETUP_ACCESS_TOKEN environment variable
+              </p>
+            </div>
+            <div>
+              <form action="/api/admin/scraper/facebook" method="POST">
+                <button
+                  type="submit"
+                  className="w-full px-4 py-3 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                >
+                  Run Facebook Scraper
+                </button>
+              </form>
+              <p className="mt-2 text-xs text-gray-500">
+                Requires Facebook Graph API access
+              </p>
+            </div>
           </div>
           <p className="mt-4 text-sm text-gray-500">
-            Scrapers will run in the background and create groups with "NEEDS_REVIEW" status
+            Live scrapers create groups with &quot;NEEDS_REVIEW&quot; status for moderation
           </p>
         </div>
 
