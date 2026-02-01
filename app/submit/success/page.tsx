@@ -7,7 +7,7 @@ export default function SubmitSuccessPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50 flex flex-col">
       <Header />
 
-      <main className="flex-1 flex items-center justify-center px-6 py-16">
+      <main className="flex-1 flex items-center justify-center px-6 sm:px-8 lg:px-12 py-16">
         <div className="max-w-md w-full">
           {/* Success Card */}
           <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200 p-8 md:p-10 text-center">

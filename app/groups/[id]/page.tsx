@@ -39,8 +39,8 @@ export default async function GroupDetailPage({
       <Header />
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white">
-        <div className="max-w-5xl mx-auto px-6 md:px-8 py-8 md:py-12">
+      <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white w-full flex justify-center">
+        <div className="w-full max-w-5xl px-6 sm:px-8 lg:px-12 py-8 md:py-12">
           {/* Breadcrumb */}
           <Link
             href="/browse"
@@ -90,7 +90,8 @@ export default async function GroupDetailPage({
       </div>
 
       {/* Content Section */}
-      <div className="max-w-5xl mx-auto px-6 md:px-8 py-10 md:py-12">
+      <div className="w-full flex justify-center">
+        <div className="w-full max-w-5xl px-6 sm:px-8 lg:px-12 py-10 md:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
@@ -205,6 +206,7 @@ export default async function GroupDetailPage({
               </Link>
             </div>
           </div>
+        </div>
         </div>
       </div>
 

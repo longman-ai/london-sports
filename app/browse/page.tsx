@@ -64,8 +64,8 @@ export default async function BrowsePage({
       <Header />
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 py-12 md:py-16">
+      <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white w-full flex justify-center">
+        <div className="w-full max-w-7xl px-6 sm:px-8 lg:px-12 py-12 md:py-16">
           <div className="text-center mb-8">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Find Sports Groups
@@ -159,7 +159,8 @@ export default async function BrowsePage({
       </div>
 
       {/* Results Section */}
-      <div className="max-w-7xl mx-auto px-6 md:px-8 py-10 md:py-12">
+      <div className="w-full flex justify-center">
+        <div className="w-full max-w-7xl px-6 sm:px-8 lg:px-12 py-10 md:py-12">
         {/* Results Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
@@ -304,6 +305,7 @@ export default async function BrowsePage({
             </Link>
           </div>
         )}
+        </div>
       </div>
 
       <Footer />

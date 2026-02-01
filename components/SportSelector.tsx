@@ -40,8 +40,8 @@ const sportAction: Record<string, string> = {
 
 export default function SportSelector() {
   return (
-    <div className="w-full max-w-7xl mx-auto px-6 md:px-8">
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+    <div className="w-full">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
         {SPORTS.map((sport) => (
           <Link
             key={sport.id}

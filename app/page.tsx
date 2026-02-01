@@ -5,19 +5,19 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/50 to-slate-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/50 to-slate-50 overflow-x-hidden w-full">
       <Header transparent />
 
-      <main>
+      <main className="w-full flex flex-col items-center">
         {/* Hero Section */}
-        <section className="relative overflow-hidden">
+        <section className="relative overflow-hidden w-full flex justify-center">
           {/* Background Pattern */}
           <div className="absolute inset-0 -z-10">
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl" />
             <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-200/30 rounded-full blur-3xl" />
           </div>
 
-          <div className="max-w-7xl mx-auto px-6 md:px-8 pt-12 md:pt-20 pb-16">
+          <div className="w-full max-w-7xl px-6 sm:px-8 lg:px-12 pt-12 md:pt-20 pb-16">
             <div className="text-center mb-16">
               {/* Badge */}
               <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 bg-blue-100/80 backdrop-blur-sm rounded-full border border-blue-200/50">
@@ -68,11 +68,11 @@ export default function Home() {
             </div>
 
             {/* Popular Searches */}
-            <div className="mb-20">
+            <div className="mb-20 w-full">
               <p className="text-sm font-semibold text-slate-500 text-center mb-5 uppercase tracking-wide">
                 Popular this week
               </p>
-              <div className="flex flex-wrap justify-center gap-3 px-4">
+              <div className="flex flex-wrap justify-center gap-3">
                 {[
                   { emoji: '🎾', text: 'Padel in Westminster', href: '/padel-westminster' },
                   { emoji: '🏃', text: 'Running in Camden', href: '/running-camden' },
@@ -97,8 +97,8 @@ export default function Home() {
         </section>
 
         {/* Sports Grid Section */}
-        <section className="py-16 md:py-24 bg-white border-y border-slate-200">
-          <div className="max-w-7xl mx-auto px-6 md:px-8">
+        <section className="py-16 md:py-24 bg-white border-y border-slate-200 w-full flex justify-center">
+          <div className="w-full max-w-7xl px-6 sm:px-8 lg:px-12">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
                 What do you feel like playing?
@@ -112,8 +112,8 @@ export default function Home() {
         </section>
 
         {/* Stats Section */}
-        <section className="py-20 md:py-28">
-          <div className="max-w-7xl mx-auto px-6 md:px-8">
+        <section className="py-20 md:py-28 w-full flex justify-center">
+          <div className="w-full max-w-7xl px-6 sm:px-8 lg:px-12">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
               {[
                 { value: '6', label: 'Sports', icon: '🏆' },
@@ -136,8 +136,8 @@ export default function Home() {
         </section>
 
         {/* How it Works Section */}
-        <section className="py-20 bg-gradient-to-br from-slate-900 to-slate-800 text-white">
-          <div className="max-w-7xl mx-auto px-6 md:px-8">
+        <section className="py-20 bg-gradient-to-br from-slate-900 to-slate-800 text-white w-full flex justify-center">
+          <div className="w-full max-w-7xl px-6 sm:px-8 lg:px-12">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
                 How it works
@@ -199,8 +199,8 @@ export default function Home() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 md:py-28">
-          <div className="max-w-4xl mx-auto px-6 md:px-8 text-center">
+        <section className="py-20 md:py-28 w-full flex justify-center">
+          <div className="w-full max-w-4xl px-6 sm:px-8 lg:px-12 text-center">
             <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-10 md:p-16 shadow-2xl shadow-blue-500/25">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
                 Run a sports group?
