@@ -2,11 +2,11 @@ import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import { NextRequest, NextResponse } from "next/server"
 import {
-  scrapeGoogleGroups,
-  getSampleGoogleSportsGroups,
-  transformGoogleGroup,
-  GoogleGroup,
-} from "@/lib/google"
+  scrapeBingGroups,
+  getSampleBingSportsGroups,
+  transformBingGroup,
+  BingGroup,
+} from "@/lib/bing"
 
 export async function POST(req: NextRequest) {
   const session = await auth()
@@ -21,21 +21,21 @@ export async function POST(req: NextRequest) {
     // Create scraper run record
     const scraperRun = await prisma.scraperRun.create({
       data: {
-        scraperType: useSeedData ? "Google (Seed)" : "Google",
+        scraperType: useSeedData ? "Bing (Seed)" : "Bing",
         status: "running",
         startedAt: new Date(),
       },
     })
 
-    let groups: GoogleGroup[] = []
+    let groups: BingGroup[] = []
     let errors: string[] = []
 
     if (useSeedData) {
       // Use sample data for testing/development
-      groups = getSampleGoogleSportsGroups()
+      groups = getSampleBingSportsGroups()
     } else {
-      // Use live Google Custom Search API
-      const result = await scrapeGoogleGroups()
+      // Use live Bing Web Search API
+      const result = await scrapeBingGroups()
       groups = result.groups
       errors = result.errors
 
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
             errors: errors,
             metadata: {
               message: "API access failed. Use ?seed=true for sample data.",
-              note: "Requires GOOGLE_API_KEY and GOOGLE_SEARCH_ENGINE_ID",
+              note: "Requires BING_API_KEY",
             },
           },
         })
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
             entityId: scraperRun.id,
             userId: session.user.email!,
             changes: {
-              scraperType: "Google",
+              scraperType: "Bing",
               status: "failed",
               errors,
             },
@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
 
     for (const group of groups) {
       try {
-        const groupData = transformGoogleGroup(group)
+        const groupData = transformBingGroup(group)
 
         // Check if group already exists (by externalId)
         const existing = await prisma.group.findUnique({
@@ -129,7 +129,7 @@ export async function POST(req: NextRequest) {
         metadata: {
           useSeedData,
           processedGroups,
-          apiNote: useSeedData ? "Used sample data" : "Used Google Custom Search API",
+          apiNote: useSeedData ? "Used sample data" : "Used Bing Web Search API",
         },
       },
     })
@@ -142,7 +142,7 @@ export async function POST(req: NextRequest) {
         entityId: scraperRun.id,
         userId: session.user.email!,
         changes: {
-          scraperType: useSeedData ? "Google (Seed)" : "Google",
+          scraperType: useSeedData ? "Bing (Seed)" : "Bing",
           groupsFound: groups.length,
           groupsCreated,
         },
@@ -151,9 +151,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.redirect(new URL("/admin/scraper", req.url))
   } catch (error) {
-    console.error("Error running Google scraper:", error)
+    console.error("Error running Bing scraper:", error)
     return NextResponse.json(
-      { error: "Failed to run Google scraper" },
+      { error: "Failed to run Bing scraper" },
       { status: 500 }
     )
   }

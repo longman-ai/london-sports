@@ -58,9 +58,9 @@ export default async function ScraperPage() {
             <form action="/api/admin/scraper/google?seed=true" method="POST">
               <button
                 type="submit"
-                className="px-6 py-3 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 shadow-sm"
+                className="px-6 py-3 text-sm font-medium text-white bg-purple-600 rounded-md hover:bg-purple-700 shadow-sm"
               >
-                Seed Google Data (10 Groups)
+                Seed Bing Data (10 Groups)
               </button>
             </form>
           </div>
@@ -101,13 +101,13 @@ export default async function ScraperPage() {
               <form action="/api/admin/scraper/google" method="POST">
                 <button
                   type="submit"
-                  className="w-full px-4 py-3 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                  className="w-full px-4 py-3 text-sm font-medium text-white bg-purple-600 rounded-md hover:bg-purple-700"
                 >
-                  Run Google Scraper
+                  Run Bing Scraper
                 </button>
               </form>
               <p className="mt-2 text-xs text-gray-500">
-                Requires GOOGLE_API_KEY
+                Requires BING_API_KEY
               </p>
             </div>
           </div>
