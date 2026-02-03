@@ -107,14 +107,12 @@ export default async function SportBoroughPage({ params }: PageProps) {
               🟢 {groups.length} Active {groups.length === 1 ? 'Group' : 'Groups'}
             </span>
           </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4 px-4">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4">
             {sport.displayName} <span className="text-blue-600">in London</span>
           </h1>
-          <div className="flex justify-center">
-            <p className="text-lg md:text-xl text-slate-600 mb-8 max-w-2xl px-4 text-center">
-              {content.tagline}
-            </p>
-          </div>
+          <p className="text-lg md:text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
+            {content.tagline}
+          </p>
 
           {/* Sport-specific emphasis tags */}
           <div className="flex flex-wrap gap-3 justify-center mb-10">
@@ -129,8 +127,8 @@ export default async function SportBoroughPage({ params }: PageProps) {
           </div>
 
           {/* Available Locations - Mobile optimized */}
-          <div className="max-w-4xl mx-auto px-4">
-            <p className="text-sm font-semibold text-slate-700 mb-4">Switch location:</p>
+          <div className="max-w-4xl mx-auto">
+            <p className="text-sm font-semibold text-slate-700 mb-4 text-center">Switch location:</p>
             <div className="flex flex-wrap gap-3 justify-center">
               {BOROUGHS.map((borough) => (
                 <Link
