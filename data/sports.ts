@@ -4,7 +4,13 @@ export type SportType =
   | 'tennis'
   | 'badminton'
   | 'running'
-  | 'padel';
+  | 'padel'
+  | 'cricket'
+  | 'rugby'
+  | 'cycling'
+  | 'swimming'
+  | 'yoga'
+  | 'climbing';
 
 export interface Sport {
   id: SportType;
@@ -49,6 +55,42 @@ export const SPORTS: Sport[] = [
     name: 'padel',
     displayName: 'Padel',
     description: 'Premium padel courts and matchmaking opportunities'
+  },
+  {
+    id: 'cricket',
+    name: 'cricket',
+    displayName: 'Cricket',
+    description: 'Cricket clubs and nets sessions across London'
+  },
+  {
+    id: 'rugby',
+    name: 'rugby',
+    displayName: 'Rugby',
+    description: 'Rugby clubs for all levels from social to competitive'
+  },
+  {
+    id: 'cycling',
+    name: 'cycling',
+    displayName: 'Cycling',
+    description: 'Road cycling, gravel, and mountain biking groups'
+  },
+  {
+    id: 'swimming',
+    name: 'swimming',
+    displayName: 'Swimming',
+    description: 'Swimming clubs and masters squads for adults'
+  },
+  {
+    id: 'yoga',
+    name: 'yoga',
+    displayName: 'Yoga',
+    description: 'Yoga studios and community classes across London'
+  },
+  {
+    id: 'climbing',
+    name: 'climbing',
+    displayName: 'Climbing',
+    description: 'Bouldering and rope climbing gyms and clubs'
   }
 ];
 

@@ -8,7 +8,13 @@ const sportIcons: Record<string, string> = {
   tennis: '🎾',
   badminton: '🏸',
   running: '🏃',
-  padel: '🎾'
+  padel: '🎾',
+  cricket: '🏏',
+  rugby: '🏉',
+  cycling: '🚴',
+  swimming: '🏊',
+  yoga: '🧘',
+  climbing: '🧗'
 };
 
 const sportCaptions: Record<string, string> = {
@@ -17,7 +23,13 @@ const sportCaptions: Record<string, string> = {
   tennis: 'Premium courts',
   badminton: 'Easy drop-in',
   running: 'Beginner friendly',
-  padel: 'Fastest growing'
+  padel: 'Fastest growing',
+  cricket: 'Nets & leagues',
+  rugby: 'Social & competitive',
+  cycling: 'Group rides',
+  swimming: 'Masters clubs',
+  yoga: 'All styles',
+  climbing: 'Bouldering & rope'
 };
 
 const sportStatus: Record<string, { label: string; color: string }> = {
@@ -26,7 +38,13 @@ const sportStatus: Record<string, { label: string; color: string }> = {
   tennis: { label: '🔥 Popular this week', color: 'bg-orange-50 text-orange-700 border-orange-200' },
   badminton: { label: '🟢 Active groups', color: 'bg-green-50 text-green-700 border-green-200' },
   running: { label: '🔥 Popular this week', color: 'bg-orange-50 text-orange-700 border-orange-200' },
-  padel: { label: '🔥 Popular this week', color: 'bg-orange-50 text-orange-700 border-orange-200' }
+  padel: { label: '🔥 Popular this week', color: 'bg-orange-50 text-orange-700 border-orange-200' },
+  cricket: { label: '🟢 Active groups', color: 'bg-green-50 text-green-700 border-green-200' },
+  rugby: { label: '🟢 Active groups', color: 'bg-green-50 text-green-700 border-green-200' },
+  cycling: { label: '🟢 Active groups', color: 'bg-green-50 text-green-700 border-green-200' },
+  swimming: { label: '🟢 Active groups', color: 'bg-green-50 text-green-700 border-green-200' },
+  yoga: { label: '🔥 Popular this week', color: 'bg-orange-50 text-orange-700 border-orange-200' },
+  climbing: { label: '🔥 Popular this week', color: 'bg-orange-50 text-orange-700 border-orange-200' }
 };
 
 const sportAction: Record<string, string> = {
@@ -35,7 +53,13 @@ const sportAction: Record<string, string> = {
   tennis: 'Courts available',
   badminton: 'Join today',
   running: 'Groups starting soon',
-  padel: 'Book now'
+  padel: 'Book now',
+  cricket: 'Nets available',
+  rugby: 'Join today',
+  cycling: 'Rides this weekend',
+  swimming: 'Sessions available',
+  yoga: 'Classes daily',
+  climbing: 'Drop in anytime'
 };
 
 export default function SportSelector() {

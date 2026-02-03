@@ -63,6 +63,60 @@ export const SPORT_CONTENT: Record<SportType, SportContent> = {
     aboutTitle: 'Basketball in London',
     aboutText:
       'Discover basketball courts and pickup games across central London. From outdoor parks to indoor facilities, find regular sessions and connect with other players. Most games are casual and welcome players of all levels.'
+  },
+  cricket: {
+    sport: 'cricket',
+    tagline: 'Join cricket clubs and nets sessions',
+    emphasis: ['Nets sessions', 'League teams', 'Indoor & outdoor', 'All skill levels'],
+    groupLabel: 'Clubs & Nets',
+    aboutTitle: 'Cricket in London',
+    aboutText:
+      'Find cricket clubs offering nets sessions, league teams, and social cricket. Whether you\'re looking to play competitively or just enjoy a casual game, there are clubs across London welcoming new members year-round.'
+  },
+  rugby: {
+    sport: 'rugby',
+    tagline: 'Find rugby clubs near you',
+    emphasis: ['Social rugby', 'Touch rugby', 'All levels welcome', 'Men\'s & women\'s teams'],
+    groupLabel: 'Clubs',
+    aboutTitle: 'Rugby in London',
+    aboutText:
+      'Discover rugby clubs for all levels from complete beginners to experienced players. Many clubs offer touch rugby and social sessions alongside competitive teams. A great way to stay fit and make friends.'
+  },
+  cycling: {
+    sport: 'cycling',
+    tagline: 'Join group rides and cycling clubs',
+    emphasis: ['Group rides', 'Road & gravel', 'All paces', 'Social cycling'],
+    groupLabel: 'Clubs & Groups',
+    aboutTitle: 'Cycling Groups in London',
+    aboutText:
+      'Find cycling clubs and group rides for all abilities. From gentle social spins to fast-paced road rides, there are groups heading out every weekend. A perfect way to explore London and beyond on two wheels.'
+  },
+  swimming: {
+    sport: 'swimming',
+    tagline: 'Swim clubs and coached sessions',
+    emphasis: ['Masters swimming', 'Coached sessions', 'Open water', 'All abilities'],
+    groupLabel: 'Clubs & Sessions',
+    aboutTitle: 'Swimming in London',
+    aboutText:
+      'Join swimming clubs offering coached sessions for adults. Whether you\'re looking to improve technique, train for events, or enjoy social swims, there are clubs at pools across London for all abilities.'
+  },
+  yoga: {
+    sport: 'yoga',
+    tagline: 'Find yoga classes and studios',
+    emphasis: ['All styles', 'Beginner friendly', 'Community classes', 'Drop-in welcome'],
+    groupLabel: 'Studios & Classes',
+    aboutTitle: 'Yoga in London',
+    aboutText:
+      'Discover yoga studios and community classes offering various styles from Vinyasa to Yin. Most classes welcome beginners and offer drop-in options. A great way to improve flexibility, strength, and wellbeing.'
+  },
+  climbing: {
+    sport: 'climbing',
+    tagline: 'Bouldering and climbing gyms',
+    emphasis: ['Bouldering', 'Rope climbing', 'Beginner sessions', 'All levels'],
+    groupLabel: 'Gyms & Clubs',
+    aboutTitle: 'Climbing in London',
+    aboutText:
+      'Find bouldering and rope climbing gyms across London. Most gyms offer beginner sessions and have welcoming communities. A fun full-body workout that challenges both body and mind.'
   }
 };
 

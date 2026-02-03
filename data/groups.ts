@@ -225,7 +225,10 @@ export const getAllSportBoroughCombinations = (): Array<{
   sport: SportType;
   borough: BoroughType;
 }> => {
-  const sports: SportType[] = ['football', 'basketball', 'tennis', 'badminton', 'running', 'padel'];
+  const sports: SportType[] = [
+    'football', 'basketball', 'tennis', 'badminton', 'running', 'padel',
+    'cricket', 'rugby', 'cycling', 'swimming', 'yoga', 'climbing'
+  ];
   const boroughs: BoroughType[] = [
     'hackney',
     'camden',
