@@ -2,11 +2,11 @@ import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import { NextRequest, NextResponse } from "next/server"
 import {
-  scrapeBingGroups,
-  getSampleBingSportsGroups,
-  transformBingGroup,
-  BingGroup,
-} from "@/lib/bing"
+  scrapeBraveGroups,
+  getSampleBraveSportsGroups,
+  transformBraveGroup,
+  BraveGroup,
+} from "@/lib/brave"
 
 export async function POST(req: NextRequest) {
   const session = await auth()
@@ -21,21 +21,21 @@ export async function POST(req: NextRequest) {
     // Create scraper run record
     const scraperRun = await prisma.scraperRun.create({
       data: {
-        scraperType: useSeedData ? "Bing (Seed)" : "Bing",
+        scraperType: useSeedData ? "Brave (Seed)" : "Brave",
         status: "running",
         startedAt: new Date(),
       },
     })
 
-    let groups: BingGroup[] = []
+    let groups: BraveGroup[] = []
     let errors: string[] = []
 
     if (useSeedData) {
       // Use sample data for testing/development
-      groups = getSampleBingSportsGroups()
+      groups = getSampleBraveSportsGroups()
     } else {
-      // Use live Bing Web Search API
-      const result = await scrapeBingGroups()
+      // Use live Brave Search API
+      const result = await scrapeBraveGroups()
       groups = result.groups
       errors = result.errors
 
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
             errors: errors,
             metadata: {
               message: "API access failed. Use ?seed=true for sample data.",
-              note: "Requires BING_API_KEY",
+              note: "Requires BRAVE_API_KEY",
             },
           },
         })
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
             entityId: scraperRun.id,
             userId: session.user.email!,
             changes: {
-              scraperType: "Bing",
+              scraperType: "Brave",
               status: "failed",
               errors,
             },
@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
 
     for (const group of groups) {
       try {
-        const groupData = transformBingGroup(group)
+        const groupData = transformBraveGroup(group)
 
         // Check if group already exists (by externalId)
         const existing = await prisma.group.findUnique({
@@ -129,7 +129,7 @@ export async function POST(req: NextRequest) {
         metadata: {
           useSeedData,
           processedGroups,
-          apiNote: useSeedData ? "Used sample data" : "Used Bing Web Search API",
+          apiNote: useSeedData ? "Used sample data" : "Used Brave Search API",
         },
       },
     })
@@ -142,7 +142,7 @@ export async function POST(req: NextRequest) {
         entityId: scraperRun.id,
         userId: session.user.email!,
         changes: {
-          scraperType: useSeedData ? "Bing (Seed)" : "Bing",
+          scraperType: useSeedData ? "Brave (Seed)" : "Brave",
           groupsFound: groups.length,
           groupsCreated,
         },
@@ -151,9 +151,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.redirect(new URL("/admin/scraper", req.url))
   } catch (error) {
-    console.error("Error running Bing scraper:", error)
+    console.error("Error running Brave scraper:", error)
     return NextResponse.json(
-      { error: "Failed to run Bing scraper" },
+      { error: "Failed to run Brave scraper" },
       { status: 500 }
     )
   }

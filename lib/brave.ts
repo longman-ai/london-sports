@@ -1,15 +1,15 @@
 /**
- * Bing Web Search API Client
+ * Brave Search API Client
  *
- * Uses Bing Web Search API to find London sports clubs and groups.
+ * Uses Brave Search API to find London sports clubs and groups.
  * To use this scraper, you need:
- * 1. Create an Azure account at https://portal.azure.com/
- * 2. Create a "Bing Search v7" resource (free tier: 1,000/month)
- * 3. Copy the API key from "Keys and Endpoint"
- * 4. Set BING_API_KEY in your environment
+ * 1. Go to https://api-dashboard.search.brave.com/
+ * 2. Create account and subscribe to free plan (2,000 queries/month)
+ * 3. Copy your API key from the dashboard
+ * 4. Set BRAVE_API_KEY in your environment
  */
 
-const BING_SEARCH_URL = 'https://api.bing.microsoft.com/v7.0/search';
+const BRAVE_SEARCH_URL = 'https://api.search.brave.com/res/v1/web/search';
 
 // Sports keywords to search for
 const SPORTS_KEYWORDS = [
@@ -34,17 +34,19 @@ const LONDON_BOROUGHS = [
   'Hammersmith and Fulham', 'Kensington and Chelsea',
 ];
 
-// Interface for Bing Web Search result
-export interface BingSearchResult {
-  name: string;
+// Interface for Brave Search result
+export interface BraveSearchResult {
+  title: string;
   url: string;
-  snippet: string;
-  displayUrl: string;
-  dateLastCrawled?: string;
+  description: string;
+  profile?: {
+    name: string;
+    url: string;
+  };
 }
 
 // Interface for parsed group from search results
-export interface BingGroup {
+export interface BraveGroup {
   id: string;
   name: string;
   description: string;
@@ -58,7 +60,7 @@ export interface ScraperResult {
   success: boolean;
   groupsFound: number;
   groupsCreated: number;
-  groups: BingGroup[];
+  groups: BraveGroup[];
   errors: string[];
 }
 
@@ -143,23 +145,23 @@ function generateIdFromUrl(url: string): string {
 }
 
 /**
- * Search Bing Web Search API for sports groups in London
+ * Search Brave Search API for sports groups in London
  */
-async function searchBingForGroups(apiKey: string): Promise<BingGroup[]> {
-  const groups: BingGroup[] = [];
+async function searchBraveForGroups(apiKey: string): Promise<BraveGroup[]> {
+  const groups: BraveGroup[] = [];
   const seenUrls = new Set<string>();
 
   for (const keyword of SPORTS_KEYWORDS) {
     try {
-      const searchUrl = new URL(BING_SEARCH_URL);
+      const searchUrl = new URL(BRAVE_SEARCH_URL);
       searchUrl.searchParams.append('q', `${keyword} London UK`);
       searchUrl.searchParams.append('count', '20');
-      searchUrl.searchParams.append('mkt', 'en-GB');
-      searchUrl.searchParams.append('responseFilter', 'Webpages');
+      searchUrl.searchParams.append('country', 'GB');
 
       const response = await fetch(searchUrl.toString(), {
         headers: {
-          'Ocp-Apim-Subscription-Key': apiKey,
+          'Accept': 'application/json',
+          'X-Subscription-Token': apiKey,
         },
       });
 
@@ -168,16 +170,16 @@ async function searchBingForGroups(apiKey: string): Promise<BingGroup[]> {
 
         // Handle rate limit
         if (response.status === 429) {
-          console.error('Bing API: Rate limit exceeded');
+          console.error('Brave API: Rate limit exceeded');
           break;
         }
 
-        console.error(`Bing API error for "${keyword}":`, response.status, errorText);
+        console.error(`Brave API error for "${keyword}":`, response.status, errorText);
         continue;
       }
 
       const data = await response.json();
-      const items: BingSearchResult[] = data.webPages?.value || [];
+      const items: BraveSearchResult[] = data.web?.results || [];
 
       for (const item of items) {
         // Skip if already seen this URL
@@ -201,16 +203,19 @@ async function searchBingForGroups(apiKey: string): Promise<BingGroup[]> {
           continue;
         }
 
-        const fullText = `${item.name} ${item.snippet}`;
+        const fullText = `${item.title} ${item.description || ''}`;
         const borough = detectBoroughFromText(fullText);
+
+        // Extract display link from profile or URL
+        const displayLink = item.profile?.name || new URL(item.url).hostname;
 
         groups.push({
           id: generateIdFromUrl(item.url),
-          name: item.name.replace(/ - .*$/, '').replace(/ \| .*$/, '').trim(),
-          description: item.snippet,
+          name: item.title.replace(/ - .*$/, '').replace(/ \| .*$/, '').trim(),
+          description: item.description || '',
           link: item.url,
-          displayLink: item.displayUrl,
-          snippet: item.snippet,
+          displayLink,
+          snippet: item.description || '',
           borough,
         });
       }
@@ -227,9 +232,9 @@ async function searchBingForGroups(apiKey: string): Promise<BingGroup[]> {
 }
 
 /**
- * Transform Bing search result to our database format
+ * Transform Brave search result to our database format
  */
-export function transformBingGroup(group: BingGroup): {
+export function transformBraveGroup(group: BraveGroup): {
   sport: string;
   borough: string;
   name: string;
@@ -259,17 +264,17 @@ export function transformBingGroup(group: BingGroup): {
     description: shortDescription || `${group.name} - a ${sport.toLowerCase()} club in ${borough}.`,
     contact: `Visit: ${group.link}`,
     sourceUrl: group.link,
-    externalId: `bing_${group.id}`,
+    externalId: `brave_${group.id}`,
   };
 }
 
 /**
  * Main scraper function
  */
-export async function scrapeBingGroups(): Promise<ScraperResult> {
+export async function scrapeBraveGroups(): Promise<ScraperResult> {
   const errors: string[] = [];
 
-  const apiKey = process.env.BING_API_KEY;
+  const apiKey = process.env.BRAVE_API_KEY;
 
   if (!apiKey) {
     return {
@@ -278,19 +283,19 @@ export async function scrapeBingGroups(): Promise<ScraperResult> {
       groupsCreated: 0,
       groups: [],
       errors: [
-        'BING_API_KEY environment variable is not set.',
-        'To set up Bing Web Search API:',
-        '1. Go to https://portal.azure.com/',
-        '2. Create a "Bing Search v7" resource',
-        '3. Select free tier (F1): 1,000 transactions/month',
-        '4. Copy the API key from "Keys and Endpoint"',
-        '5. Set BING_API_KEY in your environment variables',
+        'BRAVE_API_KEY environment variable is not set.',
+        'To set up Brave Search API:',
+        '1. Go to https://api-dashboard.search.brave.com/',
+        '2. Create account and subscribe to free plan',
+        '3. Free tier: 2,000 queries/month',
+        '4. Copy your API key from the dashboard',
+        '5. Set BRAVE_API_KEY in your environment variables',
       ],
     };
   }
 
   try {
-    const groups = await searchBingForGroups(apiKey);
+    const groups = await searchBraveForGroups(apiKey);
 
     return {
       success: true,
@@ -313,10 +318,10 @@ export async function scrapeBingGroups(): Promise<ScraperResult> {
 /**
  * Get sample London sports groups data for testing/seeding
  */
-export function getSampleBingSportsGroups(): BingGroup[] {
+export function getSampleBraveSportsGroups(): BraveGroup[] {
   return [
     {
-      id: 'bing_sample_1',
+      id: 'brave_sample_1',
       name: 'Brixton Football Club',
       description: 'Community football club in South London offering adult and youth teams. Training sessions and friendly matches every week.',
       link: 'https://www.brixtonfootball.example.com',
@@ -325,7 +330,7 @@ export function getSampleBingSportsGroups(): BingGroup[] {
       borough: 'Lambeth',
     },
     {
-      id: 'bing_sample_2',
+      id: 'brave_sample_2',
       name: 'Clapham Runners',
       description: 'Social running group meeting on Clapham Common. Weekly runs for all abilities from beginners to marathon trainers.',
       link: 'https://www.claphamrunners.example.com',
@@ -334,7 +339,7 @@ export function getSampleBingSportsGroups(): BingGroup[] {
       borough: 'Lambeth',
     },
     {
-      id: 'bing_sample_3',
+      id: 'brave_sample_3',
       name: 'Shoreditch Tennis Academy',
       description: 'Professional tennis coaching in East London. Courts available for hire and group lessons for beginners to advanced.',
       link: 'https://www.shoreditchtennis.example.com',
@@ -343,7 +348,7 @@ export function getSampleBingSportsGroups(): BingGroup[] {
       borough: 'Hackney',
     },
     {
-      id: 'bing_sample_4',
+      id: 'brave_sample_4',
       name: 'Stratford Basketball Association',
       description: 'Olympic Park basketball club with teams competing in local leagues. Open gym sessions and youth development programs.',
       link: 'https://www.stratfordbasketball.example.com',
@@ -352,7 +357,7 @@ export function getSampleBingSportsGroups(): BingGroup[] {
       borough: 'Tower Hamlets',
     },
     {
-      id: 'bing_sample_5',
+      id: 'brave_sample_5',
       name: 'Highbury Padel Club',
       description: 'North London premier padel destination with 6 courts. Beginner lessons and competitive leagues available.',
       link: 'https://www.highburypadel.example.com',
@@ -361,7 +366,7 @@ export function getSampleBingSportsGroups(): BingGroup[] {
       borough: 'Islington',
     },
     {
-      id: 'bing_sample_6',
+      id: 'brave_sample_6',
       name: 'Peckham Cycling Club',
       description: 'Road and gravel cycling club based in South East London. Group rides every Saturday morning through Kent countryside.',
       link: 'https://www.peckhamcycling.example.com',
@@ -370,7 +375,7 @@ export function getSampleBingSportsGroups(): BingGroup[] {
       borough: 'Southwark',
     },
     {
-      id: 'bing_sample_7',
+      id: 'brave_sample_7',
       name: 'Fulham Swimming Club',
       description: 'Masters swimming for adults at Fulham Pools. Coached sessions Tuesday and Thursday evenings.',
       link: 'https://www.fulhamswimming.example.com',
@@ -379,7 +384,7 @@ export function getSampleBingSportsGroups(): BingGroup[] {
       borough: 'Hammersmith and Fulham',
     },
     {
-      id: 'bing_sample_8',
+      id: 'brave_sample_8',
       name: 'Notting Hill Yoga Studio',
       description: 'Boutique yoga studio offering Vinyasa, Ashtanga, and Yin classes. New student offers and monthly memberships.',
       link: 'https://www.nottinghillyoga.example.com',
@@ -388,7 +393,7 @@ export function getSampleBingSportsGroups(): BingGroup[] {
       borough: 'Kensington and Chelsea',
     },
     {
-      id: 'bing_sample_9',
+      id: 'brave_sample_9',
       name: 'Battersea Climbing Wall',
       description: 'Indoor bouldering and rope climbing facility near Battersea Park. Day passes and memberships available.',
       link: 'https://www.batterseaclimbing.example.com',
@@ -397,7 +402,7 @@ export function getSampleBingSportsGroups(): BingGroup[] {
       borough: 'Wandsworth',
     },
     {
-      id: 'bing_sample_10',
+      id: 'brave_sample_10',
       name: 'Woolwich Cricket Club',
       description: 'Historic cricket club in Greenwich with senior and junior teams. Summer nets and indoor winter training.',
       link: 'https://www.woolwichcricket.example.com',
