@@ -28,7 +28,7 @@ export const parseSlug = (
   ];
 
   // Try to match sport at the beginning
-  const sportMatch = slug.match(/^(football|basketball|tennis|badminton|running|padel)-/);
+  const sportMatch = slug.match(/^(football|basketball|tennis|badminton|running|padel|cricket|rugby|cycling|swimming|yoga|climbing)-/);
 
   if (!sportMatch) {
     return null;
