@@ -70,7 +70,7 @@ export default async function BrowsePage({
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Find Sports Groups
             </h1>
-            <p className="text-lg text-slate-300 max-w-2xl mx-auto">
+            <p className="text-lg text-slate-300 max-w-2xl mx-auto text-balance">
               Discover local sports communities across London. Filter by sport, borough, or search for specific groups.
             </p>
           </div>

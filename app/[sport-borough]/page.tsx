@@ -111,7 +111,7 @@ export default async function SportBoroughPage({ params }: PageProps) {
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4">
             {sport.displayName} <span className="text-blue-600">in London</span>
           </h1>
-          <p className="text-lg md:text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-slate-600 mb-8 max-w-2xl mx-auto text-balance">
             {content.tagline}
           </p>
 

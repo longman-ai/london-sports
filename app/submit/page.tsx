@@ -17,7 +17,7 @@ export default function SubmitGroupPage() {
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Add Your Sports Group
           </h1>
-          <p className="text-lg text-slate-300 max-w-xl mx-auto">
+          <p className="text-lg text-slate-300 max-w-xl mx-auto text-balance">
             Help players discover your group. Fill out the form below and we'll review your submission within 24 hours.
           </p>
         </div>

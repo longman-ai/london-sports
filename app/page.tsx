@@ -40,7 +40,7 @@ export default function Home() {
               </h1>
 
               {/* Subheadline */}
-              <p className="text-xl md:text-2xl text-slate-600 max-w-2xl mx-auto leading-relaxed mb-4">
+              <p className="text-xl md:text-2xl text-slate-600 max-w-2xl mx-auto leading-relaxed mb-4 text-balance">
                 Join local sports groups and communities. From football to padel, connect with players near you.
               </p>
               <p className="text-sm text-slate-500">
@@ -205,7 +205,7 @@ export default function Home() {
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
                 Run a sports group?
               </h2>
-              <p className="text-blue-100 text-lg mb-8 max-w-xl mx-auto">
+              <p className="text-blue-100 text-lg mb-8 max-w-xl mx-auto text-balance">
                 Add your group to our directory for free and reach hundreds of players looking to join.
               </p>
               <Link
