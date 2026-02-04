@@ -82,8 +82,8 @@ export default async function SportBoroughPage({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50">
       {/* Header with back link - optimized for mobile thumb zone */}
-      <header className="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50 backdrop-blur-sm bg-white/95">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 py-4">
+      <header className="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50 backdrop-blur-sm bg-white/95 w-full flex justify-center">
+        <div className="w-full max-w-7xl px-6 sm:px-8 lg:px-12 py-4">
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors touch-manipulation min-h-[44px]"
@@ -96,7 +96,8 @@ export default async function SportBoroughPage({ params }: PageProps) {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 md:px-8 py-12 md:py-16">
+      <main className="w-full flex justify-center">
+        <div className="w-full max-w-7xl px-6 sm:px-8 lg:px-12 py-12 md:py-16">
         {/* Hero Section - Enhanced for mobile */}
         <div className="text-center mb-16">
           <div className="mb-4 flex items-center justify-center gap-3">
@@ -236,6 +237,7 @@ export default async function SportBoroughPage({ params }: PageProps) {
             {content.aboutText}
           </p>
         </details>
+        </div>
       </main>
 
       <Footer />
