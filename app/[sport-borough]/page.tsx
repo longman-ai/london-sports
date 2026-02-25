@@ -14,48 +14,29 @@ interface PageProps {
   params: Promise<{ 'sport-borough': string }>;
 }
 
-// Generate static params for all 42 sport-borough combinations
 export async function generateStaticParams() {
   const combinations = getAllSportBoroughCombinations();
-
   return combinations.map((combo) => ({
     'sport-borough': `${combo.sport}-${combo.borough}`
   }));
 }
 
-// Generate SEO metadata for each page
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const resolvedParams = await params;
   const slug = resolvedParams['sport-borough'];
   const parsed = parseSlug(slug);
 
-  if (!parsed) {
-    return {
-      title: 'Page Not Found'
-    };
-  }
+  if (!parsed) return { title: 'Page Not Found' };
 
   const sport = getSportByName(parsed.sport);
   const borough = getBoroughByName(parsed.borough);
 
-  if (!sport || !borough) {
-    return {
-      title: 'Page Not Found'
-    };
-  }
+  if (!sport || !borough) return { title: 'Page Not Found' };
 
   const title = `${sport.displayName} in ${borough.displayName} | London Sports Community`;
   const description = `Find ${sport.displayName.toLowerCase()} groups, clubs, and venues in ${borough.displayName}. ${sport.description}. Join your local sports community today.`;
 
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      type: 'website'
-    }
-  };
+  return { title, description, openGraph: { title, description, type: 'website' } };
 }
 
 export default async function SportBoroughPage({ params }: PageProps) {
@@ -63,180 +44,157 @@ export default async function SportBoroughPage({ params }: PageProps) {
   const slug = resolvedParams['sport-borough'];
   const parsed = parseSlug(slug);
 
-  // Handle invalid slugs
-  if (!parsed) {
-    notFound();
-  }
+  if (!parsed) notFound();
 
   const sport = getSportByName(parsed.sport);
   const borough = getBoroughByName(parsed.borough);
 
-  if (!sport || !borough) {
-    notFound();
-  }
+  if (!sport || !borough) notFound();
 
-  // Get sport-specific content and groups
   const content = getSportContent(parsed.sport);
   const groups = getGroupsBySportAndBorough(parsed.sport, parsed.borough);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50">
-      {/* Header with back link - optimized for mobile thumb zone */}
-      <header className="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50 backdrop-blur-sm bg-white/95 w-full flex justify-center">
-        <div className="w-full max-w-7xl px-6 sm:px-8 lg:px-12 py-4">
+    <div className="min-h-screen bg-stone-50">
+      {/* Header */}
+      <header className="bg-white border-b border-stone-200 sticky top-0 z-50 backdrop-blur-sm bg-white/95 w-full flex justify-center">
+        <div className="w-full max-w-6xl px-5 sm:px-8 py-3.5 flex items-center justify-between">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors touch-manipulation min-h-[44px]"
+            className="inline-flex items-center gap-1.5 text-emerald-600 hover:text-emerald-700 text-sm font-medium transition-colors"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            <span>Back to all sports</span>
+            All sports
+          </Link>
+          <Link href="/submit" className="text-sm font-medium text-stone-500 hover:text-stone-700 transition-colors">
+            + Add group
           </Link>
         </div>
       </header>
 
       <main className="w-full flex justify-center">
-        <div className="w-full max-w-7xl px-6 sm:px-8 lg:px-12 py-12 md:py-16">
-        {/* Hero Section - Enhanced for mobile */}
-        <div className="text-center mb-16">
-          <div className="mb-4 flex items-center justify-center gap-3">
-            <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-4 py-2 rounded-full border border-blue-200">
-              📍 {formatBoroughName(parsed.borough)}
-            </span>
-            <span className="text-sm font-semibold text-green-700 bg-green-50 px-4 py-2 rounded-full border border-green-200">
-              🟢 {groups.length} Active {groups.length === 1 ? 'Group' : 'Groups'}
-            </span>
-          </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4">
-            {sport.displayName} <span className="text-blue-600">in London</span>
-          </h1>
-          <p className="text-lg md:text-xl text-slate-600 mb-8 max-w-2xl mx-auto text-balance">
-            {content.tagline}
-          </p>
-
-          {/* Sport-specific emphasis tags */}
-          <div className="flex flex-wrap gap-3 justify-center mb-10">
-            {content.emphasis.map((item, idx) => (
-              <span
-                key={idx}
-                className="inline-block bg-blue-50 text-blue-700 text-sm font-semibold px-4 py-2 rounded-full border border-blue-200"
-              >
-                {item}
+        <div className="w-full max-w-6xl px-5 sm:px-8 py-10 md:py-14">
+          {/* Hero */}
+          <div className="text-center mb-12">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-stone-100 text-stone-600 border border-stone-200">
+                📍 {formatBoroughName(parsed.borough)}
               </span>
-            ))}
-          </div>
+              <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                {groups.length} {groups.length === 1 ? 'listing' : 'listings'}
+              </span>
+            </div>
 
-          {/* Available Locations - Mobile optimized */}
-          <div className="max-w-4xl mx-auto">
-            <p className="text-sm font-semibold text-slate-700 mb-4 text-center">Switch location:</p>
-            <div className="flex flex-wrap gap-3 justify-center">
-              {BOROUGHS.map((borough) => (
-                <Link
-                  key={borough.id}
-                  href={`/${sport.name}-${borough.name}`}
-                  className={`px-5 py-3 rounded-lg text-sm font-medium transition-all touch-manipulation min-h-[44px] flex items-center ${
-                    borough.name === parsed.borough
-                      ? 'bg-blue-600 text-white shadow-lg'
-                      : 'bg-white text-slate-700 border-2 border-slate-200 hover:border-blue-400 hover:shadow-md active:scale-95'
-                  }`}
-                >
-                  {borough.displayName}
-                </Link>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-stone-900 mb-3">
+              {sport.displayName} in {borough.displayName}
+            </h1>
+            <p className="text-base text-stone-500 max-w-lg mx-auto mb-6">
+              {content.tagline}
+            </p>
+
+            {/* Tags */}
+            <div className="flex flex-wrap gap-2 justify-center mb-8">
+              {content.emphasis.map((item, idx) => (
+                <span key={idx} className="text-xs font-medium px-3 py-1.5 rounded-full bg-white text-stone-600 border border-stone-200">
+                  {item}
+                </span>
               ))}
             </div>
-          </div>
-        </div>
 
-        {/* Primary CTA - Featured Group */}
-        {groups.length > 0 && (
-          <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-10 md:p-12 mb-16 text-center shadow-xl">
-            <div className="inline-block mb-3 px-3 py-1 bg-white/20 rounded-full">
-              <span className="text-xs font-bold text-white">FEATURED</span>
+            {/* Borough switcher */}
+            <div>
+              <p className="text-xs font-medium text-stone-400 mb-3 uppercase tracking-wider">Other boroughs</p>
+              <div className="flex flex-wrap gap-2 justify-center">
+                {BOROUGHS.map((b) => (
+                  <Link
+                    key={b.id}
+                    href={`/${sport.name}-${b.name}`}
+                    className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-all ${
+                      b.name === parsed.borough
+                        ? 'bg-emerald-600 text-white'
+                        : 'bg-white text-stone-600 border border-stone-200 hover:border-emerald-300'
+                    }`}
+                  >
+                    {b.displayName}
+                  </Link>
+                ))}
+              </div>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Join {groups[0].name}
-            </h2>
-            <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
-              {groups[0].description}
+          </div>
+
+          {/* Featured group */}
+          {groups.length > 0 && (
+            <div className="bg-emerald-600 rounded-xl p-6 md:p-8 mb-12 text-center">
+              <p className="text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-2">Featured</p>
+              <h2 className="text-xl md:text-2xl font-bold text-white mb-2">{groups[0].name}</h2>
+              <p className="text-emerald-100 text-sm mb-5 max-w-lg mx-auto">{groups[0].description}</p>
+              <JoinButton
+                contact={groups[0].contact}
+                label={groups[0].isVenue ? 'Check Availability' : 'Join Now'}
+                variant="secondary"
+              />
+            </div>
+          )}
+
+          {/* Groups list */}
+          <div className="mb-12">
+            <VenueList groups={groups} sport={parsed.sport} />
+          </div>
+
+          {/* Sport-specific tips */}
+          {parsed.sport === 'running' && (
+            <div className="bg-white border border-stone-200 rounded-xl p-5 mb-6">
+              <div className="flex items-start gap-3">
+                <span className="text-xl">🏃</span>
+                <div>
+                  <h3 className="text-sm font-semibold text-stone-900 mb-1">New to running?</h3>
+                  <p className="text-sm text-stone-600 leading-relaxed">
+                    All our running groups welcome beginners. Look for &quot;all paces&quot; groups — most have leaders who make sure nobody gets left behind.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {(parsed.sport === 'padel' || parsed.sport === 'tennis') && (
+            <div className="bg-white border border-stone-200 rounded-xl p-5 mb-6">
+              <div className="flex items-start gap-3">
+                <span className="text-xl">🎾</span>
+                <div>
+                  <h3 className="text-sm font-semibold text-stone-900 mb-1">Court availability</h3>
+                  <p className="text-sm text-stone-600 leading-relaxed">
+                    Most venues offer both membership and pay-as-you-play. Contact them directly for booking and pricing — many have off-peak discounts.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {parsed.sport === 'badminton' && (
+            <div className="bg-white border border-stone-200 rounded-xl p-5 mb-6">
+              <div className="flex items-start gap-3">
+                <span className="text-xl">🏸</span>
+                <div>
+                  <h3 className="text-sm font-semibold text-stone-900 mb-1">Drop-in sessions</h3>
+                  <p className="text-sm text-stone-600 leading-relaxed">
+                    Many community halls and leisure centres offer drop-in badminton — just turn up and play. Check times directly with venues.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* About */}
+          <details className="bg-white border border-stone-200 rounded-xl p-5">
+            <summary className="text-sm font-semibold text-stone-900 cursor-pointer hover:text-emerald-700 transition-colors">
+              {content.aboutTitle}
+            </summary>
+            <p className="text-sm text-stone-600 mt-3 leading-relaxed">
+              {content.aboutText}
             </p>
-            <JoinButton
-              contact={groups[0].contact}
-              label={groups[0].isVenue ? 'Check Availability' : 'Join Now'}
-              variant="secondary"
-            />
-          </div>
-        )}
-
-        {/* Groups/Venues List */}
-        <div className="mb-16">
-          <VenueList groups={groups} sport={parsed.sport} />
-        </div>
-
-        {/* Sport-specific conditional content */}
-        {parsed.sport === 'running' && (
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-8 mb-8 shadow-sm">
-            <div className="flex items-start gap-3">
-              <span className="text-2xl">🏃</span>
-              <div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2">
-                  New to running?
-                </h3>
-                <p className="text-slate-700 text-base leading-relaxed">
-                  All of our running groups welcome beginners! Look for groups labeled "beginner
-                  friendly" or "all paces" to find the perfect fit. Most groups have leaders who
-                  ensure no one gets left behind.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {(parsed.sport === 'padel' || parsed.sport === 'tennis') && (
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-8 mb-8 shadow-sm">
-            <div className="flex items-start gap-3">
-              <span className="text-2xl">🎾</span>
-              <div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2">
-                  Court Availability
-                </h3>
-                <p className="text-slate-700 text-base leading-relaxed">
-                  Most venues offer both membership and pay-as-you-play options. Contact venues
-                  directly for court availability, booking systems, and pricing. Many offer
-                  off-peak discounts.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {parsed.sport === 'badminton' && (
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-8 mb-8 shadow-sm">
-            <div className="flex items-start gap-3">
-              <span className="text-2xl">🏸</span>
-              <div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2">
-                  Drop-in Sessions
-                </h3>
-                <p className="text-slate-700 text-base leading-relaxed">
-                  Many community halls and leisure centres offer drop-in badminton sessions where
-                  you can just turn up and play. Check session times directly with venues as they
-                  may vary week to week.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* About Section - Collapsed for brevity */}
-        <details className="bg-white border-2 border-slate-200 rounded-xl p-6 hover:border-blue-300 transition-colors">
-          <summary className="text-lg font-bold text-slate-900 cursor-pointer hover:text-blue-600 transition-colors">
-            {content.aboutTitle}
-          </summary>
-          <p className="text-slate-700 mt-4 leading-relaxed">
-            {content.aboutText}
-          </p>
-        </details>
+          </details>
         </div>
       </main>
 
