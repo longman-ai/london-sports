@@ -18,13 +18,12 @@ export const parseSlug = (
 ): { sport: SportType; borough: BoroughType } | null => {
   // Handle multi-word boroughs like 'kensington-chelsea' and 'tower-hamlets'
   const validBoroughs = [
-    'hackney',
-    'camden',
-    'islington',
-    'lambeth',
-    'tower-hamlets',
-    'westminster',
-    'kensington-chelsea'
+    'hackney', 'camden', 'islington', 'lambeth', 'tower-hamlets', 'westminster',
+    'kensington-chelsea', 'southwark', 'wandsworth', 'lewisham', 'greenwich',
+    'newham', 'barnet', 'ealing', 'brent', 'enfield', 'haringey', 'waltham-forest',
+    'redbridge', 'hounslow', 'hammersmith-and-fulham', 'merton', 'croydon', 'bromley',
+    'barking-and-dagenham', 'sutton', 'harrow', 'hillingdon', 'havering',
+    'richmond-upon-thames', 'kingston-upon-thames', 'bexley', 'city-of-london'
   ];
 
   // Try to match sport at the beginning
