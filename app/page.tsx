@@ -9,7 +9,7 @@ const jsonLd = {
   '@type': 'WebSite',
   name: 'London Sports Community',
   url: 'https://londonsportscommunity.co.uk',
-  description: 'Find local sports groups across London. Football, tennis, padel, running, and more across 7 boroughs.',
+  description: 'Find local sports groups across London. Football, tennis, padel, running, and more across all 33 boroughs.',
   potentialAction: {
     '@type': 'SearchAction',
     target: 'https://londonsportscommunity.co.uk/browse?search={search_term_string}',
@@ -106,7 +106,7 @@ export default function Home() {
                 What do you want to play?
               </h2>
               <p className="text-stone-500">
-                12 sports, 7 boroughs — pick one and see what&apos;s around
+                12 sports across every London borough — pick one and start exploring
               </p>
             </div>
             <SportSelector />

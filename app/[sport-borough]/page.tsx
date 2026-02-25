@@ -103,24 +103,39 @@ export default async function SportBoroughPage({ params }: PageProps) {
               ))}
             </div>
 
-            {/* Borough switcher */}
+            {/* Borough switcher — grouped by area */}
             <div>
               <p className="text-xs font-medium text-stone-400 mb-3 uppercase tracking-wider">Other boroughs</p>
-              <div className="flex flex-wrap gap-2 justify-center">
-                {BOROUGHS.map((b) => (
-                  <Link
-                    key={b.id}
-                    href={`/${sport.name}-${b.name}`}
-                    className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-all ${
-                      b.name === parsed.borough
-                        ? 'bg-emerald-600 text-white'
-                        : 'bg-white text-stone-600 border border-stone-200 hover:border-emerald-300'
-                    }`}
-                  >
-                    {b.displayName}
-                  </Link>
-                ))}
-              </div>
+              {[
+                { area: 'Central', boroughs: ['westminster', 'city-of-london', 'camden', 'islington', 'kensington-chelsea', 'southwark', 'lambeth'] },
+                { area: 'East', boroughs: ['hackney', 'tower-hamlets', 'newham', 'waltham-forest', 'redbridge', 'barking-and-dagenham', 'havering'] },
+                { area: 'South', boroughs: ['lewisham', 'greenwich', 'wandsworth', 'merton', 'croydon', 'bromley', 'sutton', 'bexley'] },
+                { area: 'West', boroughs: ['hammersmith-and-fulham', 'ealing', 'hounslow', 'hillingdon', 'richmond-upon-thames', 'kingston-upon-thames'] },
+                { area: 'North', boroughs: ['haringey', 'barnet', 'enfield', 'brent', 'harrow'] },
+              ].map((group) => (
+                <div key={group.area} className="mb-3">
+                  <p className="text-xs font-semibold text-stone-400 mb-1.5">{group.area} London</p>
+                  <div className="flex flex-wrap gap-1.5 justify-center">
+                    {group.boroughs.map((bName) => {
+                      const b = BOROUGHS.find((br) => br.name === bName);
+                      if (!b) return null;
+                      return (
+                        <Link
+                          key={b.id}
+                          href={`/${sport.name}-${b.name}`}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                            b.name === parsed.borough
+                              ? 'bg-emerald-600 text-white'
+                              : 'bg-white text-stone-600 border border-stone-200 hover:border-emerald-300'
+                          }`}
+                        >
+                          {b.displayName}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
