@@ -22,9 +22,12 @@ export const metadata: Metadata = {
     "sports communities london",
     "london fitness groups"
   ],
+  metadataBase: new URL("https://londonsportscommunity.co.uk"),
   openGraph: {
     title: "London Sports Community",
     description: "Find your sport across London",
+    url: "https://londonsportscommunity.co.uk",
+    siteName: "London Sports Community",
     type: "website"
   }
 };

@@ -4,12 +4,29 @@ import Header from '@/components/Header';
 import Link from 'next/link';
 import { GROUPS } from '@/data/groups';
 
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'London Sports Community',
+  url: 'https://londonsportscommunity.co.uk',
+  description: 'Find local sports groups across London. Football, tennis, padel, running, and more across 7 boroughs.',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: 'https://londonsportscommunity.co.uk/browse?search={search_term_string}',
+    'query-input': 'required name=search_term_string',
+  },
+};
+
 export default function Home() {
   // Show a few groups as "recently listed"
   const featuredGroups = GROUPS.slice(0, 4);
 
   return (
     <div className="min-h-screen bg-stone-50 overflow-x-hidden w-full">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header transparent />
 
       <main className="w-full flex flex-col items-center">
