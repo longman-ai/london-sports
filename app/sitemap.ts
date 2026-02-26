@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next'
+import { getAllSlugs } from '@/data/blog'
 
 const SPORTS = ['football', 'basketball', 'tennis', 'badminton', 'running', 'padel', 'cricket', 'rugby', 'cycling', 'swimming', 'yoga', 'climbing']
 const BOROUGHS = [
@@ -28,5 +29,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }))
   )
 
-  return [...staticPages, ...sportBoroughPages]
+  const blogPages = [
+    { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.8 },
+    ...getAllSlugs().map(slug => ({
+      url: `${baseUrl}/blog/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
+  ]
+
+  return [...staticPages, ...blogPages, ...sportBoroughPages]
 }
