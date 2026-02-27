@@ -40,7 +40,7 @@ export default async function BlogArticle({ params }: Props) {
     <div className="min-h-screen bg-stone-50 flex flex-col">
       <Header />
       <main className="flex-1 w-full flex flex-col items-center">
-        <article className="w-full max-w-3xl px-5 sm:px-8 py-16">
+        <article className="w-full max-w-[680px] px-6 sm:px-8 py-20">
           <Link
             href="/blog"
             className="inline-flex items-center gap-1 text-sm text-emerald-600 hover:text-emerald-700 font-medium mb-8"
@@ -59,21 +59,24 @@ export default async function BlogArticle({ params }: Props) {
             ))}
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-bold text-stone-900 mb-4 leading-tight">
+          <h1 className="text-4xl md:text-[48px] font-bold text-stone-900 mb-5 leading-[1.15] tracking-tight">
             {post.title}
           </h1>
 
-          <p className="text-stone-500 text-sm mb-14">
-            {post.author} ·{' '}
-            {new Date(post.date).toLocaleDateString('en-GB', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric',
-            })}
-          </p>
+          <div className="flex items-center gap-3 text-[15px] text-stone-400 mb-12 pb-12 border-b border-stone-200">
+            <span>{post.author}</span>
+            <span>·</span>
+            <span>
+              {new Date(post.date).toLocaleDateString('en-GB', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+              })}
+            </span>
+          </div>
 
           <div
-            className="prose prose-lg prose-stone prose-emerald max-w-none prose-headings:font-bold prose-headings:text-stone-900 prose-h2:text-2xl prose-h2:mt-16 prose-h2:mb-6 prose-h3:text-xl prose-h3:mt-12 prose-h3:mb-4 prose-p:leading-[1.9] prose-p:mb-6 prose-p:text-stone-600 prose-li:leading-[1.8] prose-li:text-stone-600 prose-li:mb-2 prose-ul:my-6 prose-ul:pl-6 prose-a:text-emerald-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-stone-800 prose-hr:my-14 prose-hr:border-stone-200"
+            className="blog-content"
             dangerouslySetInnerHTML={{ __html: markdownToHtml(post.content) }}
           />
         </article>
@@ -130,8 +133,8 @@ function markdownToHtml(md: string): string {
         // Check if it looks like metadata (bold label lines like **Location:** ...)
         const isMeta = paraLines.length >= 2 && paraLines.every(l => l.trim().startsWith('**') && l.includes(':'));
         if (isMeta) {
-          const metaHtml = paraLines.map(l => `<div style="margin-bottom: 0.5rem;">${processInline(l)}</div>`).join('\n');
-          html.push(`<div style="margin: 2rem 0; padding: 1.25rem 1.5rem; background: #fafaf9; border-radius: 0.75rem; border: 1px solid #e7e5e4; font-size: 0.95rem;">${metaHtml}</div>`);
+          const metaHtml = paraLines.map(l => `<div>${processInline(l)}</div>`).join('\n');
+          html.push(`<div class="meta-card">${metaHtml}</div>`);
         } else {
           // Each line becomes its own paragraph for proper spacing
           for (const pLine of paraLines) {
