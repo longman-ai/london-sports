@@ -73,7 +73,7 @@ export default async function BlogArticle({ params }: Props) {
           </p>
 
           <div
-            className="prose prose-stone prose-emerald max-w-none prose-headings:font-bold prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-lg prose-h3:mt-8 prose-h3:mb-3 prose-p:leading-relaxed prose-li:leading-relaxed prose-a:text-emerald-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-stone-900"
+            className="prose prose-stone prose-emerald max-w-none prose-headings:font-bold prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-5 prose-h3:text-xl prose-h3:mt-10 prose-h3:mb-4 prose-p:leading-[1.8] prose-p:mb-5 prose-p:text-stone-600 prose-li:leading-[1.8] prose-li:text-stone-600 prose-ul:my-5 prose-ul:space-y-2 prose-a:text-emerald-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-stone-900 prose-hr:my-10"
             dangerouslySetInnerHTML={{ __html: markdownToHtml(post.content) }}
           />
         </article>
@@ -84,16 +84,40 @@ export default async function BlogArticle({ params }: Props) {
 }
 
 function markdownToHtml(md: string): string {
-  return md
-    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-    .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-    .replace(/^---$/gm, '<hr />')
+  // Split into blocks by double newline
+  const blocks = md.split(/\n\n+/);
+  const html: string[] = [];
+
+  for (const block of blocks) {
+    const trimmed = block.trim();
+    if (!trimmed) continue;
+
+    // Headings
+    if (trimmed.startsWith('### ')) {
+      html.push(`<h3>${processInline(trimmed.slice(4))}</h3>`);
+    } else if (trimmed.startsWith('## ')) {
+      html.push(`<h2>${processInline(trimmed.slice(3))}</h2>`);
+    } else if (trimmed.startsWith('# ')) {
+      html.push(`<h1>${processInline(trimmed.slice(2))}</h1>`);
+    } else if (trimmed === '---') {
+      html.push('<hr />');
+    } else if (trimmed.startsWith('- ')) {
+      // List block
+      const items = trimmed.split('\n').filter(l => l.startsWith('- '));
+      html.push('<ul>' + items.map(i => `<li>${processInline(i.slice(2))}</li>`).join('') + '</ul>');
+    } else {
+      // Paragraph — handle single newlines as line breaks
+      const lines = trimmed.split('\n').map(l => processInline(l)).join('<br />');
+      html.push(`<p>${lines}</p>`);
+    }
+  }
+
+  return html.join('\n');
+}
+
+function processInline(text: string): string {
+  return text
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>')
-    .replace(/^- (.+)$/gm, '<li>$1</li>')
-    .replace(/(<li>.*<\/li>\n?)+/g, (match) => `<ul>${match}</ul>`)
-    .replace(/^(?!<[huplo]|<\/|<li|<hr|$)(.+)$/gm, '<p>$1</p>')
-    .replace(/\n{2,}/g, '\n');
+    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>');
 }
