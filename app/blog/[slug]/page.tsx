@@ -63,7 +63,7 @@ export default async function BlogArticle({ params }: Props) {
             {post.title}
           </h1>
 
-          <p className="text-stone-500 text-sm mb-10">
+          <p className="text-stone-500 text-sm mb-14">
             {post.author} ·{' '}
             {new Date(post.date).toLocaleDateString('en-GB', {
               day: 'numeric',
@@ -73,7 +73,7 @@ export default async function BlogArticle({ params }: Props) {
           </p>
 
           <div
-            className="prose prose-stone prose-emerald max-w-none prose-headings:font-bold prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-5 prose-h3:text-xl prose-h3:mt-10 prose-h3:mb-4 prose-p:leading-[1.8] prose-p:mb-5 prose-p:text-stone-600 prose-li:leading-[1.8] prose-li:text-stone-600 prose-ul:my-5 prose-ul:space-y-2 prose-a:text-emerald-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-stone-900 prose-hr:my-10"
+            className="prose prose-lg prose-stone prose-emerald max-w-none prose-headings:font-bold prose-headings:text-stone-900 prose-h2:text-2xl prose-h2:mt-16 prose-h2:mb-6 prose-h3:text-xl prose-h3:mt-12 prose-h3:mb-4 prose-p:leading-[1.9] prose-p:mb-6 prose-p:text-stone-600 prose-li:leading-[1.8] prose-li:text-stone-600 prose-li:mb-2 prose-ul:my-6 prose-ul:pl-6 prose-a:text-emerald-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-stone-800 prose-hr:my-14 prose-hr:border-stone-200"
             dangerouslySetInnerHTML={{ __html: markdownToHtml(post.content) }}
           />
         </article>
@@ -104,11 +104,28 @@ function markdownToHtml(md: string): string {
     } else if (trimmed.startsWith('- ')) {
       // List block
       const items = trimmed.split('\n').filter(l => l.startsWith('- '));
-      html.push('<ul>' + items.map(i => `<li>${processInline(i.slice(2))}</li>`).join('') + '</ul>');
+      html.push('<ul>' + items.map(i => `<li>${processInline(i.slice(2))}</li>`).join('\n') + '</ul>');
     } else {
-      // Paragraph — handle single newlines as line breaks
-      const lines = trimmed.split('\n').map(l => processInline(l)).join('<br />');
-      html.push(`<p>${lines}</p>`);
+      // Check if it's a metadata block (Location:, Nearest Tube:, etc.)
+      const lines = trimmed.split('\n');
+      const isMetaBlock = lines.length > 1 && lines.every(l => l.includes(':') || l.trim() === '');
+      
+      if (isMetaBlock) {
+        // Render as a styled definition block
+        const metaHtml = lines
+          .filter(l => l.trim())
+          .map(l => {
+            const [label, ...rest] = l.split(':');
+            const value = rest.join(':').trim();
+            return `<div style="margin-bottom: 0.25rem;"><strong>${processInline(label.trim())}:</strong> ${processInline(value)}</div>`;
+          })
+          .join('\n');
+        html.push(`<div style="margin: 1.5rem 0; padding: 1rem 1.25rem; background: #fafaf9; border-radius: 0.5rem; border: 1px solid #e7e5e4;">${metaHtml}</div>`);
+      } else {
+        // Regular paragraph
+        const paraLines = lines.map(l => processInline(l)).join('<br />');
+        html.push(`<p>${paraLines}</p>`);
+      }
     }
   }
 
