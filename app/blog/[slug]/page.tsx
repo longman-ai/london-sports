@@ -84,47 +84,60 @@ export default async function BlogArticle({ params }: Props) {
 }
 
 function markdownToHtml(md: string): string {
-  // Split into blocks by double newline
-  const blocks = md.split(/\n\n+/);
+  // Split by lines first, then process
+  const lines = md.split('\n');
   const html: string[] = [];
+  let i = 0;
 
-  for (const block of blocks) {
-    const trimmed = block.trim();
-    if (!trimmed) continue;
+  while (i < lines.length) {
+    const line = lines[i].trimEnd();
+
+    // Skip empty lines (they create spacing naturally)
+    if (!line.trim()) {
+      i++;
+      continue;
+    }
 
     // Headings
-    if (trimmed.startsWith('### ')) {
-      html.push(`<h3>${processInline(trimmed.slice(4))}</h3>`);
-    } else if (trimmed.startsWith('## ')) {
-      html.push(`<h2>${processInline(trimmed.slice(3))}</h2>`);
-    } else if (trimmed.startsWith('# ')) {
-      html.push(`<h1>${processInline(trimmed.slice(2))}</h1>`);
-    } else if (trimmed === '---') {
+    if (line.startsWith('### ')) {
+      html.push(`<h3>${processInline(line.slice(4))}</h3>`);
+      i++;
+    } else if (line.startsWith('## ')) {
+      html.push(`<h2>${processInline(line.slice(3))}</h2>`);
+      i++;
+    } else if (line.startsWith('# ')) {
+      html.push(`<h1>${processInline(line.slice(2))}</h1>`);
+      i++;
+    } else if (line.trim() === '---') {
       html.push('<hr />');
-    } else if (trimmed.startsWith('- ')) {
-      // List block
-      const items = trimmed.split('\n').filter(l => l.startsWith('- '));
-      html.push('<ul>' + items.map(i => `<li>${processInline(i.slice(2))}</li>`).join('\n') + '</ul>');
+      i++;
+    } else if (line.startsWith('- ')) {
+      // Collect all list items
+      const items: string[] = [];
+      while (i < lines.length && lines[i].startsWith('- ')) {
+        items.push(lines[i].slice(2));
+        i++;
+      }
+      html.push('<ul>' + items.map(item => `<li>${processInline(item)}</li>`).join('\n') + '</ul>');
     } else {
-      // Check if it's a metadata block (Location:, Nearest Tube:, etc.)
-      const lines = trimmed.split('\n');
-      const isMetaBlock = lines.length > 1 && lines.every(l => l.includes(':') || l.trim() === '');
-      
-      if (isMetaBlock) {
-        // Render as a styled definition block
-        const metaHtml = lines
-          .filter(l => l.trim())
-          .map(l => {
-            const [label, ...rest] = l.split(':');
-            const value = rest.join(':').trim();
-            return `<div style="margin-bottom: 0.25rem;"><strong>${processInline(label.trim())}:</strong> ${processInline(value)}</div>`;
-          })
-          .join('\n');
-        html.push(`<div style="margin: 1.5rem 0; padding: 1rem 1.25rem; background: #fafaf9; border-radius: 0.5rem; border: 1px solid #e7e5e4;">${metaHtml}</div>`);
-      } else {
-        // Regular paragraph
-        const paraLines = lines.map(l => processInline(l)).join('<br />');
-        html.push(`<p>${paraLines}</p>`);
+      // Paragraph — collect lines until empty line or special line
+      const paraLines: string[] = [];
+      while (i < lines.length && lines[i].trim() && !lines[i].startsWith('#') && !lines[i].startsWith('- ') && lines[i].trim() !== '---') {
+        paraLines.push(lines[i]);
+        i++;
+      }
+      if (paraLines.length > 0) {
+        // Check if it looks like metadata (bold label lines like **Location:** ...)
+        const isMeta = paraLines.length >= 2 && paraLines.every(l => l.trim().startsWith('**') && l.includes(':'));
+        if (isMeta) {
+          const metaHtml = paraLines.map(l => `<div style="margin-bottom: 0.5rem;">${processInline(l)}</div>`).join('\n');
+          html.push(`<div style="margin: 2rem 0; padding: 1.25rem 1.5rem; background: #fafaf9; border-radius: 0.75rem; border: 1px solid #e7e5e4; font-size: 0.95rem;">${metaHtml}</div>`);
+        } else {
+          // Each line becomes its own paragraph for proper spacing
+          for (const pLine of paraLines) {
+            html.push(`<p>${processInline(pLine)}</p>`);
+          }
+        }
       }
     }
   }
