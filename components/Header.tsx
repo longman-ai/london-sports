@@ -44,6 +44,12 @@ export default function Header({ transparent = false }: HeaderProps) {
             >
               Add a Group
             </Link>
+            <Link
+              href="/blog"
+              className="px-3.5 py-2 text-stone-600 hover:text-stone-900 text-sm font-medium rounded-lg hover:bg-stone-100 transition-all"
+            >
+              Blog
+            </Link>
             <div className="w-px h-5 bg-stone-200 mx-2" />
             <Link
               href="/browse"
@@ -78,6 +84,9 @@ export default function Header({ transparent = false }: HeaderProps) {
               </Link>
               <Link href="/submit" className="px-3 py-2.5 text-stone-700 text-sm font-medium rounded-lg hover:bg-stone-100" onClick={() => setMobileMenuOpen(false)}>
                 Add a Group
+              </Link>
+              <Link href="/blog" className="px-3 py-2.5 text-stone-700 text-sm font-medium rounded-lg hover:bg-stone-100" onClick={() => setMobileMenuOpen(false)}>
+                Blog
               </Link>
               <Link href="/browse" className="mt-1 px-3 py-2.5 text-center text-white bg-emerald-600 rounded-lg text-sm font-semibold" onClick={() => setMobileMenuOpen(false)}>
                 Find Groups
