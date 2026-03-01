@@ -187,9 +187,9 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
-                { title: 'The Best Padel Courts in London: 2026 Guide', slug: 'best-padel-courts-london-2026', tag: 'Padel' },
-                { title: 'Why Padel Is Taking Over London', slug: 'why-padel-taking-over-london', tag: 'Padel' },
-                { title: 'How to Find a Sports Group in London', slug: 'how-to-find-sports-group-london', tag: 'Guide' },
+                { title: 'Best Padel Courts in London — 2026 Guide', slug: 'best-padel-courts-london', tag: 'Padel' },
+                { title: 'Best Running Clubs in London for Beginners', slug: 'best-running-clubs-london-beginners', tag: 'Running' },
+                { title: 'How to Find Local Sports Groups in Your Borough', slug: 'find-local-sports-groups-london-borough', tag: 'Guide' },
               ].map((post) => (
                 <Link
                   key={post.slug}
