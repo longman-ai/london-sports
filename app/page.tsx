@@ -106,7 +106,7 @@ export default function Home() {
                 What do you want to play?
               </h2>
               <p className="text-stone-500">
-                12 sports across every London borough — pick one and start exploring
+                12 sports across all 33 London boroughs — pick one and find a group this week
               </p>
             </div>
             <SportSelector />
@@ -121,7 +121,7 @@ export default function Home() {
                 Recently listed
               </h2>
               <p className="text-stone-500">
-                Groups and venues added to the directory
+                New groups and venues added this week — updated daily
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
