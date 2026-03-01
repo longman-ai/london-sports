@@ -50,24 +50,24 @@ export default function Home() {
               </h1>
 
               <p className="text-lg text-stone-500 max-w-lg mx-auto leading-relaxed mb-8">
-                We&apos;re building a directory of local sports groups across London — from five-a-side to padel, running clubs to yoga. All free to browse.
+                Browse 150+ local sports groups across all 33 London boroughs — from five-a-side to padel, running clubs to yoga. Free to use, no sign-up needed.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link
                   href="/browse"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-white bg-emerald-600 rounded-xl font-semibold hover:bg-emerald-700 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-7 py-4 text-white bg-emerald-600 rounded-xl font-semibold text-lg hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-600/20"
                 >
-                  Browse Groups
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  Find Groups Near You
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
                 </Link>
                 <Link
                   href="/submit"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-stone-700 bg-white border border-stone-300 rounded-xl font-semibold hover:border-stone-400 hover:bg-stone-50 transition-all"
+                  className="inline-flex items-center justify-center gap-2 px-7 py-4 text-emerald-700 bg-emerald-50 border-2 border-emerald-200 rounded-xl font-semibold text-lg hover:border-emerald-400 hover:bg-emerald-100 transition-all"
                 >
-                  Add Your Group
+                  List Your Group — Free
                 </Link>
               </div>
             </div>
@@ -174,22 +174,61 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Latest from the Blog */}
+        <section className="py-16 md:py-20 bg-stone-50 w-full flex justify-center">
+          <div className="w-full max-w-6xl px-5 sm:px-8">
+            <div className="text-center mb-10">
+              <h2 className="text-2xl md:text-3xl font-bold text-stone-900 mb-2">
+                Latest from the blog
+              </h2>
+              <p className="text-stone-500">
+                Guides, tips, and the latest on London&apos;s sports scene
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                { title: 'The Best Padel Courts in London: 2026 Guide', slug: 'best-padel-courts-london-2026', tag: 'Padel' },
+                { title: 'Why Padel Is Taking Over London', slug: 'why-padel-taking-over-london', tag: 'Padel' },
+                { title: 'How to Find a Sports Group in London', slug: 'how-to-find-sports-group-london', tag: 'Guide' },
+              ].map((post) => (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="bg-white rounded-xl border border-stone-200 p-6 hover:border-emerald-300 hover:shadow-md transition-all group"
+                >
+                  <span className="inline-block text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 mb-3">
+                    {post.tag}
+                  </span>
+                  <h3 className="font-semibold text-stone-900 group-hover:text-emerald-700 transition-colors">
+                    {post.title}
+                  </h3>
+                </Link>
+              ))}
+            </div>
+            <div className="text-center mt-8">
+              <Link href="/blog" className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors">
+                Read all articles →
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* CTA for group owners */}
         <section className="py-16 md:py-20 w-full flex justify-center">
           <div className="w-full max-w-3xl px-5 sm:px-8 text-center">
             <div className="bg-emerald-600 rounded-2xl p-8 md:p-12">
               <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-                Run a sports group?
+                Run a sports group in London?
               </h2>
               <p className="text-emerald-100 mb-6 max-w-md mx-auto">
-                List your group for free. We&apos;re building this directory to help London&apos;s sports communities get discovered.
+                Get your group discovered by hundreds of Londoners looking to play. Listing is free and takes 2 minutes.
               </p>
               <Link
                 href="/submit"
-                className="inline-flex items-center gap-2 px-6 py-3.5 text-emerald-700 bg-white rounded-xl font-semibold hover:bg-emerald-50 transition-colors"
+                className="inline-flex items-center gap-2 px-7 py-4 text-emerald-700 bg-white rounded-xl font-semibold text-lg hover:bg-emerald-50 transition-colors shadow-lg"
               >
-                Add Your Group — Free
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                List Your Group Now — Free
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                 </svg>
               </Link>
