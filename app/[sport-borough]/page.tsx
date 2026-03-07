@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!sport || !borough) return { title: 'Page Not Found' };
 
   const title = `${sport.displayName} in ${borough.displayName} | London Sports Community`;
-  const description = `Find ${sport.displayName.toLowerCase()} groups, clubs, and venues in ${borough.displayName}. ${sport.description}. Join your local sports community today.`;
+  const description = `Find ${sport.displayName.toLowerCase()} groups in ${borough.displayName}, London. Browse clubs, venues, and pickup games. Join a group this week — free directory.`;
 
   return { title, description, openGraph: { title, description, type: 'website' } };
 }
@@ -54,8 +54,35 @@ export default async function SportBoroughPage({ params }: PageProps) {
   const content = getSportContent(parsed.sport);
   const groups = getGroupsBySportAndBorough(parsed.sport, parsed.borough);
 
+  // JSON-LD structured data
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: `${sport.displayName} in ${borough.displayName}`,
+    description: `Find ${sport.displayName.toLowerCase()} groups in ${borough.displayName}, London.`,
+    url: `https://londonsportscommunity.co.uk/${slug}`,
+    mainEntity: groups.map((group) => ({
+      '@type': 'SportsActivityLocation',
+      name: group.name,
+      sport: sport.displayName,
+      description: group.description,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: borough.displayName,
+        addressRegion: 'London',
+        addressCountry: 'GB',
+      },
+      ...(group.venue ? { location: { '@type': 'Place', name: group.venue } } : {}),
+      ...(group.contact ? { url: group.contact } : {}),
+    })),
+  };
+
   return (
     <div className="min-h-screen bg-stone-50">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Header */}
       <header className="bg-white border-b border-stone-200 sticky top-0 z-50 backdrop-blur-sm bg-white/95 w-full flex justify-center">
         <div className="w-full max-w-6xl px-5 sm:px-8 py-3.5 flex items-center justify-between">

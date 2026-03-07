@@ -1,7 +1,17 @@
+import { Metadata } from "next"
 import { prisma } from "@/lib/prisma"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import Link from "next/link"
+
+export const metadata: Metadata = {
+  title: "Browse Sports Groups | London Sports Community",
+  description: "Browse 150+ sports groups across all 33 London boroughs. Filter by sport, area, or skill level. Free directory, no sign-up required.",
+  openGraph: {
+    title: "Browse Sports Groups Across London",
+    description: "Find football, padel, running, tennis, yoga and more across every London borough. Free directory.",
+  },
+}
 
 const sportEmojis: Record<string, string> = {
   Football: '⚽', Basketball: '🏀', Tennis: '🎾', Badminton: '🏸',
