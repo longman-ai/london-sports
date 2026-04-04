@@ -67,8 +67,8 @@ export const GROUPS: Group[] = [
     area: 'Shoreditch',
     level: 'All levels',
     description: 'Indoor and outdoor 5-a-side football pitches with floodlights. Pay-as-you-play booking system, open all year round.',
-    contact: 'https://www.playfinder.com/london/venue/powerleague-shoreditch',
-    sourceUrl: 'https://www.playfinder.com/london/venue/powerleague-shoreditch'
+    contact: 'https://www.powerleague.com/location/shoreditch',
+    sourceUrl: 'https://www.powerleague.com/location/shoreditch'
   },
 
   // BASKETBALL - Hackney
@@ -218,8 +218,8 @@ export const GROUPS: Group[] = [
     area: 'Waterloo',
     level: 'All levels',
     description: '5-a-side football leagues and pitch hire at the Colombo Centre. Weekly leagues with promotion and relegation, plus casual booking.',
-    contact: 'https://powerplay.co.uk/football/London-Southwark',
-    sourceUrl: 'https://powerplay.co.uk/football/London-Southwark'
+    contact: 'https://www.powerleague.com/location/southwark-colombo-centre-football',
+    sourceUrl: 'https://www.powerleague.com/location/southwark-colombo-centre-football'
   },
   {
     id: 'football-southwark-2',
@@ -461,8 +461,8 @@ export const GROUPS: Group[] = [
     area: 'Hammersmith',
     level: 'All levels',
     description: 'Padel tennis courts available in Hammersmith and Fulham. Book via Playfinder for pay-and-play sessions at multiple venues.',
-    contact: 'https://www.playfinder.com/london/results/padel-tennis/hammersmith-and-fulham',
-    sourceUrl: 'https://www.playfinder.com/london/results/padel-tennis/hammersmith-and-fulham',
+    contact: 'https://www.playfinder.com/local/hammersmith-and-fulham',
+    sourceUrl: 'https://www.playfinder.com/local/hammersmith-and-fulham',
     isVenue: true
   },
 
@@ -542,13 +542,13 @@ export const GROUPS: Group[] = [
     id: 'football-hounslow-1',
     sport: 'football',
     borough: 'hounslow',
-    name: 'Goals Brentford',
-    venue: 'Goals Soccer Centre',
-    area: 'Brentford',
+    name: 'Rocks Lane Chiswick',
+    venue: 'Rocks Lane Multi Sport Centre',
+    area: 'Chiswick',
     level: 'All levels',
-    description: '5-a-side and 7-a-side football at Goals Brentford. Weekly leagues, one-off tournaments, and casual pitch hire available.',
-    contact: 'https://www.goalsfootball.co.uk/venues/brentford',
-    sourceUrl: 'https://www.goalsfootball.co.uk/venues/brentford'
+    description: '5-a-side football on astroturf pitches at Rocks Lane Chiswick, right by Turnham Green station. League and casual pitch hire available.',
+    contact: 'https://www.playfinder.com/local/hounslow',
+    sourceUrl: 'https://www.playfinder.com/local/hounslow'
   },
 
   // TENNIS - Richmond upon Thames
@@ -561,8 +561,8 @@ export const GROUPS: Group[] = [
     area: 'Richmond',
     level: 'All levels',
     description: 'Public tennis courts in the beautiful setting of Richmond Park. Book online via the LTA ClubSpark platform.',
-    contact: 'https://clubspark.lta.org.uk/richmondpark',
-    sourceUrl: 'https://clubspark.lta.org.uk/richmondpark',
+    contact: 'https://clubspark.lta.org.uk/playtennisrichmond',
+    sourceUrl: 'https://clubspark.lta.org.uk/playtennisrichmond',
     isVenue: true
   },
 
@@ -585,13 +585,13 @@ export const GROUPS: Group[] = [
     id: 'football-barking-and-dagenham-1',
     sport: 'football',
     borough: 'barking-and-dagenham',
-    name: 'Powerleague Barking',
-    venue: 'Powerleague Barking',
+    name: 'Playfinder Football Barking',
+    venue: 'Various venues',
     area: 'Barking',
     level: 'All levels',
-    description: '5-a-side football leagues and pitch hire in Barking. Modern facilities with floodlit 3G pitches, open for league and casual play.',
-    contact: 'https://www.powerleague.com/location/barking',
-    sourceUrl: 'https://www.powerleague.com/location/barking'
+    description: 'Find and book 5-a-side and 7-a-side football pitches across Barking and Dagenham. Multiple local venues available.',
+    contact: 'https://www.playfinder.com/local/barking-and-dagenham',
+    sourceUrl: 'https://www.playfinder.com/local/barking-and-dagenham'
   },
 
   // FOOTBALL - Sutton
@@ -599,13 +599,13 @@ export const GROUPS: Group[] = [
     id: 'football-sutton-1',
     sport: 'football',
     borough: 'sutton',
-    name: 'Goals Sutton',
-    venue: 'Goals Soccer Centre',
+    name: 'Playfinder Football Sutton',
+    venue: 'Various venues',
     area: 'Sutton',
     level: 'All levels',
-    description: '5-a-side football centre in Sutton with weekly leagues, tournaments, and casual pitch hire on 3G surfaces.',
-    contact: 'https://www.goalsfootball.co.uk/venues/sutton',
-    sourceUrl: 'https://www.goalsfootball.co.uk/venues/sutton'
+    description: 'Find and book 5-a-side and 7-a-side football pitches across Sutton. Multiple local venues with modern facilities.',
+    contact: 'https://www.playfinder.com/local/sutton',
+    sourceUrl: 'https://www.playfinder.com/local/sutton'
   },
 
   // FOOTBALL - Harrow
@@ -618,8 +618,8 @@ export const GROUPS: Group[] = [
     area: 'Harrow',
     level: 'All levels',
     description: 'Find and book 5-a-side and 7-a-side football pitches across Harrow. Multiple venues with 3G and astroturf surfaces.',
-    contact: 'https://www.playfinder.com/london/results/football/harrow',
-    sourceUrl: 'https://www.playfinder.com/london/results/football/harrow'
+    contact: 'https://www.playfinder.com/local/harrow',
+    sourceUrl: 'https://www.playfinder.com/local/harrow'
   },
 
   // FOOTBALL - Hillingdon
@@ -627,13 +627,13 @@ export const GROUPS: Group[] = [
     id: 'football-hillingdon-1',
     sport: 'football',
     borough: 'hillingdon',
-    name: 'Powerleague Hayes',
-    venue: 'Powerleague Hayes',
-    area: 'Hayes',
+    name: 'Playfinder Football Hillingdon',
+    venue: 'Various venues',
+    area: 'Hayes / Uxbridge',
     level: 'All levels',
-    description: '5-a-side and 7-a-side football at Powerleague Hayes. Leagues, casual hire, and kids activities on floodlit pitches.',
-    contact: 'https://www.powerleague.com/location/hayes',
-    sourceUrl: 'https://www.powerleague.com/location/hayes'
+    description: 'Find and book 5-a-side and 7-a-side football pitches across Hillingdon. Multiple venues available in Hayes and Uxbridge.',
+    contact: 'https://www.playfinder.com/local/hillingdon',
+    sourceUrl: 'https://www.playfinder.com/local/hillingdon'
   },
 
   // RUNNING - Havering
@@ -660,8 +660,8 @@ export const GROUPS: Group[] = [
     area: 'Bexley',
     level: 'All levels',
     description: 'Book 5-a-side and 7-a-side football pitches across Bexley via Playfinder. Multiple venues with modern facilities.',
-    contact: 'https://www.playfinder.com/london/results/football/bexley',
-    sourceUrl: 'https://www.playfinder.com/london/results/football/bexley'
+    contact: 'https://www.playfinder.com/local/bexley',
+    sourceUrl: 'https://www.playfinder.com/local/bexley'
   },
 
   // RUNNING - City of London
