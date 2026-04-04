@@ -1,6 +1,7 @@
 import { auth } from "@/auth"
 import { redirect, notFound } from "next/navigation"
 import { prisma } from "@/lib/prisma"
+import AdminGroupEditor from "@/components/AdminGroupEditor"
 
 export default async function AdminGroupDetailPage({
   params,
@@ -170,6 +171,16 @@ export default async function AdminGroupDetailPage({
                 </p>
               </div>
             </div>
+
+            <AdminGroupEditor
+              groupId={group.id}
+              initialContact={group.contact}
+              initialSourceUrl={group.sourceUrl}
+              initialName={group.name}
+              initialVenue={group.venue}
+              initialDescription={group.description}
+              initialLevel={group.level}
+            />
           </div>
         </div>
       </main>
