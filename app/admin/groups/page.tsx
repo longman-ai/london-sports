@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma"
 export default async function GroupsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string; sport?: string; borough?: string }>
+  searchParams: Promise<{ status?: string; sport?: string; borough?: string; search?: string }>
 }) {
   const session = await auth()
   if (!session?.user) {
@@ -16,15 +16,22 @@ export default async function GroupsPage({
   const status = params.status || "APPROVED"
   const sport = params.sport
   const borough = params.borough
+  const search = params.search
 
   const groups = await prisma.group.findMany({
     where: {
       ...(status && { status: status as any }),
       ...(sport && { sport }),
       ...(borough && { borough }),
+      ...(search && {
+        OR: [
+          { name: { contains: search, mode: "insensitive" } },
+          { venue: { contains: search, mode: "insensitive" } },
+          { description: { contains: search, mode: "insensitive" } },
+        ],
+      }),
     },
     orderBy: { updatedAt: "desc" },
-    take: 50,
   })
 
   const stats = await Promise.all([
@@ -88,9 +95,29 @@ export default async function GroupsPage({
 
         <div className="bg-white shadow rounded-lg overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900">
-              {status.replace("_", " ")} Groups ({groups.length})
-            </h2>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <h2 className="text-lg font-semibold text-gray-900">
+                {status.replace("_", " ")} Groups ({groups.length})
+              </h2>
+              <form method="GET" className="flex gap-2">
+                <input type="hidden" name="status" value={status} />
+                <input
+                  type="text"
+                  name="search"
+                  defaultValue={search}
+                  placeholder="Search groups..."
+                  className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <button type="submit" className="px-3 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700">
+                  Search
+                </button>
+                {search && (
+                  <a href={`/admin/groups?status=${status}`} className="px-3 py-2 bg-gray-100 text-gray-700 text-sm rounded-md hover:bg-gray-200">
+                    Clear
+                  </a>
+                )}
+              </form>
+            </div>
           </div>
 
           <div className="overflow-x-auto">
