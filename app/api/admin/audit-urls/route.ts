@@ -34,7 +34,7 @@ async function checkUrl(url: string): Promise<{
     let title = ''
     try {
       const text = await res.text()
-      const match = text.match(/<title[^>]*>(.*?)<\/title>/is)
+      const match = text.match(/<title[^>]*>(.*?)<\/title>/i)
       if (match) title = match[1].trim().slice(0, 200)
     } catch {}
 
