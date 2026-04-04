@@ -69,7 +69,7 @@ async function checkUrl(url: string): Promise<{
     let title = '';
     try {
       const text = await res.text();
-      const titleMatch = text.match(/<title[^>]*>(.*?)<\/title>/is);
+      const titleMatch = text.match(/<title[^>]*>(.*?)<\/title>/i);
       if (titleMatch) title = titleMatch[1].trim().slice(0, 200);
     } catch {
       // Body read failed, not critical
