@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { SPORTS } from '@/data/sports';
-import { BOROUGHS } from '@/data/boroughs';
+import { GROUPS } from '@/data/groups';
 
 const sportIcons: Record<string, string> = {
   football: '⚽',
@@ -32,26 +32,40 @@ const sportSubtitles: Record<string, string> = {
   climbing: 'Bouldering & rope'
 };
 
+// Count groups per sport
+const sportGroupCounts = GROUPS.reduce((acc, g) => {
+  acc[g.sport] = (acc[g.sport] || 0) + 1;
+  return acc;
+}, {} as Record<string, number>);
+
 export default function SportSelector() {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-      {SPORTS.map((sport) => (
-        <Link
-          key={sport.id}
-          href={`/${sport.name}-${BOROUGHS[0].name}`}
-          className="group relative bg-white rounded-xl border border-stone-200 p-5 sm:p-6 hover:border-emerald-400 hover:shadow-md card-hover text-center"
-        >
-          <div className="text-4xl sm:text-5xl mb-3 group-hover:scale-110 transition-transform duration-200">
-            {sportIcons[sport.id]}
-          </div>
-          <h3 className="text-sm sm:text-base font-semibold text-stone-900 group-hover:text-emerald-700 transition-colors">
-            {sport.displayName}
-          </h3>
-          <p className="text-xs text-stone-500 mt-1">
-            {sportSubtitles[sport.id]}
-          </p>
-        </Link>
-      ))}
+      {SPORTS.map((sport) => {
+        const count = sportGroupCounts[sport.id] || 0;
+        return (
+          <Link
+            key={sport.id}
+            href={`/browse?sport=${encodeURIComponent(sport.displayName)}`}
+            className="group relative bg-white rounded-xl border border-stone-200 p-5 sm:p-6 hover:border-emerald-400 hover:shadow-md card-hover text-center"
+          >
+            <div className="text-4xl sm:text-5xl mb-3 group-hover:scale-110 transition-transform duration-200">
+              {sportIcons[sport.id]}
+            </div>
+            <h3 className="text-sm sm:text-base font-semibold text-stone-900 group-hover:text-emerald-700 transition-colors">
+              {sport.displayName}
+            </h3>
+            <p className="text-xs text-stone-500 mt-1">
+              {sportSubtitles[sport.id]}
+            </p>
+            {count > 0 && (
+              <p className="text-xs text-emerald-600 font-medium mt-1.5">
+                {count} {count === 1 ? 'group' : 'groups'}
+              </p>
+            )}
+          </Link>
+        );
+      })}
     </div>
   );
 }

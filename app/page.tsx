@@ -1,8 +1,11 @@
 import SportSelector from '@/components/SportSelector';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
+import HomeSearch from '@/components/HomeSearch';
 import Link from 'next/link';
 import { GROUPS } from '@/data/groups';
+import { SPORTS } from '@/data/sports';
+import { BOROUGHS } from '@/data/boroughs';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -17,9 +20,30 @@ const jsonLd = {
   },
 };
 
+// Compute real stats
+const totalGroups = GROUPS.length;
+const totalSports = SPORTS.length;
+const totalBoroughs = BOROUGHS.length;
+
+// Get unique boroughs that have groups
+const activeBoroughs = [...new Set(GROUPS.map(g => g.borough))];
+
+// Popular boroughs with group counts
+const boroughCounts = GROUPS.reduce((acc, g) => {
+  acc[g.borough] = (acc[g.borough] || 0) + 1;
+  return acc;
+}, {} as Record<string, number>);
+
+const topBoroughs = Object.entries(boroughCounts)
+  .sort(([, a], [, b]) => b - a)
+  .slice(0, 8)
+  .map(([borough, count]) => {
+    const b = BOROUGHS.find(br => br.name === borough);
+    return { name: borough, displayName: b?.displayName || borough, count, zone: b?.zone || '' };
+  });
+
 export default function Home() {
-  // Show a few groups as "recently listed"
-  const featuredGroups = GROUPS.slice(0, 4);
+  const featuredGroups = GROUPS.slice(0, 6);
 
   return (
     <div className="min-h-screen bg-stone-50 overflow-x-hidden w-full">
@@ -31,13 +55,13 @@ export default function Home() {
 
       <main className="w-full flex flex-col items-center">
         {/* Hero */}
-        <section className="relative w-full flex justify-center">
-          <div className="w-full max-w-6xl px-5 sm:px-8 pt-16 md:pt-24 pb-20">
+        <section className="relative w-full flex justify-center bg-gradient-to-b from-stone-50 to-white">
+          <div className="w-full max-w-6xl px-5 sm:px-8 pt-16 md:pt-24 pb-16">
             <div className="text-center max-w-2xl mx-auto">
               <div className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 bg-emerald-50 rounded-full border border-emerald-200">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-xs font-semibold text-emerald-700">
-                  Now live — and growing every week
+                  {totalGroups}+ groups across {totalBoroughs} boroughs
                 </span>
               </div>
 
@@ -49,67 +73,87 @@ export default function Home() {
                 in London
               </h1>
 
-              <p className="text-lg text-stone-500 max-w-lg mx-auto leading-relaxed mb-8">
-                Browse 150+ local sports groups across all 33 London boroughs — from five-a-side to padel, running clubs to yoga. Free to use, no sign-up needed.
+              <p className="text-lg text-stone-500 max-w-lg mx-auto leading-relaxed mb-10">
+                The free directory for London&apos;s sports communities. Search by sport, borough, or group name — no sign-up needed.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link
-                  href="/browse"
-                  className="inline-flex items-center justify-center gap-2 px-7 py-4 text-white bg-emerald-600 rounded-xl font-semibold text-lg hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-600/20"
-                >
-                  Find Groups Near You
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </Link>
-                <Link
-                  href="/submit"
-                  className="inline-flex items-center justify-center gap-2 px-7 py-4 text-emerald-700 bg-emerald-50 border-2 border-emerald-200 rounded-xl font-semibold text-lg hover:border-emerald-400 hover:bg-emerald-100 transition-all"
-                >
-                  List Your Group — Free
-                </Link>
-              </div>
+              {/* Search Bar */}
+              <HomeSearch />
             </div>
+          </div>
+        </section>
 
-            {/* Quick links */}
-            <div className="mt-14">
-              <p className="text-xs font-semibold text-stone-400 text-center mb-4 uppercase tracking-wider">
-                Jump straight in
-              </p>
-              <div className="flex flex-wrap justify-center gap-2">
-                {[
-                  { emoji: '🎾', text: 'Padel in Westminster', href: '/padel-westminster' },
-                  { emoji: '🏃', text: 'Running in Islington', href: '/running-islington' },
-                  { emoji: '⚽', text: 'Football in Hackney', href: '/football-hackney' },
-                  { emoji: '🎾', text: 'Tennis in Kensington', href: '/tennis-kensington-chelsea' },
-                ].map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="px-4 py-2.5 bg-white border border-stone-200 rounded-full text-sm text-stone-600 hover:border-emerald-300 hover:text-emerald-700 transition-all"
-                  >
-                    <span className="mr-1.5">{item.emoji}</span>
-                    {item.text}
-                  </Link>
-                ))}
+        {/* Stats Bar */}
+        <section className="w-full flex justify-center bg-white border-y border-stone-200">
+          <div className="w-full max-w-6xl px-5 sm:px-8 py-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+              <div>
+                <p className="text-2xl md:text-3xl font-bold text-emerald-600">{totalGroups}+</p>
+                <p className="text-xs text-stone-500 font-medium mt-1">Active Groups</p>
+              </div>
+              <div>
+                <p className="text-2xl md:text-3xl font-bold text-emerald-600">{totalSports}</p>
+                <p className="text-xs text-stone-500 font-medium mt-1">Sports</p>
+              </div>
+              <div>
+                <p className="text-2xl md:text-3xl font-bold text-emerald-600">{totalBoroughs}</p>
+                <p className="text-xs text-stone-500 font-medium mt-1">London Boroughs</p>
+              </div>
+              <div>
+                <p className="text-2xl md:text-3xl font-bold text-emerald-600">100%</p>
+                <p className="text-xs text-stone-500 font-medium mt-1">Free to Use</p>
               </div>
             </div>
           </div>
         </section>
 
         {/* Sports Grid */}
-        <section className="py-16 md:py-20 bg-white border-y border-stone-200 w-full flex justify-center">
+        <section className="py-16 md:py-20 w-full flex justify-center">
           <div className="w-full max-w-6xl px-5 sm:px-8">
             <div className="text-center mb-10">
               <h2 className="text-2xl md:text-3xl font-bold text-stone-900 mb-2">
                 What do you want to play?
               </h2>
               <p className="text-stone-500">
-                12 sports across all 33 London boroughs — pick one and find a group this week
+                {totalSports} sports across all {totalBoroughs} London boroughs — pick one and find a group this week
               </p>
             </div>
             <SportSelector />
+          </div>
+        </section>
+
+        {/* Popular Boroughs */}
+        <section className="py-16 md:py-20 bg-white border-y border-stone-200 w-full flex justify-center">
+          <div className="w-full max-w-6xl px-5 sm:px-8">
+            <div className="text-center mb-10">
+              <h2 className="text-2xl md:text-3xl font-bold text-stone-900 mb-2">
+                Popular boroughs
+              </h2>
+              <p className="text-stone-500">
+                Where Londoners are finding groups right now
+              </p>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {topBoroughs.map((borough) => (
+                <Link
+                  key={borough.name}
+                  href={`/browse?borough=${encodeURIComponent(borough.displayName)}`}
+                  className="group bg-stone-50 rounded-xl border border-stone-200 p-5 hover:border-emerald-400 hover:bg-emerald-50/50 card-hover text-center transition-all"
+                >
+                  <p className="text-sm font-semibold text-stone-900 group-hover:text-emerald-700 transition-colors">
+                    {borough.displayName}
+                  </p>
+                  <p className="text-xs text-stone-400 mt-1">
+                    {borough.count} {borough.count === 1 ? 'group' : 'groups'} · {borough.zone}
+                  </p>
+                </Link>
+              ))}
+            </div>
+            <div className="text-center mt-6">
+              <Link href="/browse" className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors">
+                Browse all boroughs →
+              </Link>
+            </div>
           </div>
         </section>
 
@@ -121,18 +165,26 @@ export default function Home() {
                 Recently listed
               </h2>
               <p className="text-stone-500">
-                New groups and venues added this week — updated daily
+                New groups and venues added recently
               </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {featuredGroups.map((group) => (
                 <Link
                   key={group.id}
-                  href={`/${group.sport}-${group.borough}`}
+                  href={`/browse?sport=${encodeURIComponent(group.sport.charAt(0).toUpperCase() + group.sport.slice(1))}`}
                   className="bg-white rounded-xl border border-stone-200 p-5 hover:border-emerald-300 hover:shadow-md card-hover transition-all"
                 >
-                  <p className="text-sm font-semibold text-stone-900 mb-1">{group.name}</p>
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <p className="text-sm font-semibold text-stone-900 line-clamp-1">{group.name}</p>
+                    {group.isVenue && (
+                      <span className="flex-shrink-0 text-xs font-medium px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 border border-stone-200">
+                        Venue
+                      </span>
+                    )}
+                  </div>
                   <p className="text-xs text-stone-500 mb-2">📍 {group.venue} · {group.area}</p>
+                  <p className="text-xs text-stone-600 line-clamp-2 leading-relaxed mb-3">{group.description}</p>
                   <span className="inline-block text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
                     {group.level}
                   </span>
@@ -141,7 +193,7 @@ export default function Home() {
             </div>
             <div className="text-center mt-8">
               <Link href="/browse" className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors">
-                View all groups →
+                View all {totalGroups}+ groups →
               </Link>
             </div>
           </div>
@@ -159,9 +211,9 @@ export default function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
-                { step: '01', title: 'Pick a sport', desc: 'Choose from 12 sports — football, padel, running, and more.', icon: '🎯' },
-                { step: '02', title: 'Find your area', desc: 'Filter by borough to find groups near you.', icon: '📍' },
-                { step: '03', title: 'Get in touch', desc: 'Contact the group directly and start playing this week.', icon: '🤝' },
+                { step: '01', title: 'Search or browse', desc: 'Type a sport, pick a borough, or just browse — we\'ll show you what\'s near you.', icon: '🔍' },
+                { step: '02', title: 'Find your group', desc: 'Every listing has location, skill level, and direct contact info.', icon: '📍' },
+                { step: '03', title: 'Get playing', desc: 'Contact the group directly and start playing this week. No middleman.', icon: '🤝' },
               ].map((item) => (
                 <div key={item.step} className="bg-stone-800/50 rounded-xl p-6 border border-stone-700/50">
                   <div className="text-3xl mb-4">{item.icon}</div>
