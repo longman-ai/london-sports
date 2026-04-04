@@ -44,6 +44,17 @@ export default async function BrowsePage({
     orderBy: { updatedAt: "desc" },
   })
 
+  // Deduplicate: keep the most recently updated entry when name + borough match
+  const seen = new Map<string, typeof groups[0]>()
+  for (const group of groups) {
+    const key = `${group.name.toLowerCase().trim()}::${group.borough.toLowerCase().trim()}`
+    const existing = seen.get(key)
+    if (!existing || group.updatedAt > existing.updatedAt) {
+      seen.set(key, group)
+    }
+  }
+  const dedupedGroups = Array.from(seen.values())
+
   const allSports = await prisma.group.findMany({
     where: { status: "APPROVED" },
     select: { sport: true },
@@ -138,7 +149,7 @@ export default async function BrowsePage({
         <div className="w-full max-w-6xl px-5 sm:px-8 py-8 md:py-10">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
             <p className="text-sm text-stone-600">
-              <span className="font-semibold text-stone-900">{groups.length}</span> {groups.length === 1 ? 'group' : 'groups'} found
+              <span className="font-semibold text-stone-900">{dedupedGroups.length}</span> {dedupedGroups.length === 1 ? 'group' : 'groups'} found
               {sport && <span className="text-emerald-600"> · {sport}</span>}
               {borough && <span className="text-emerald-600"> · {borough}</span>}
             </p>
@@ -147,9 +158,9 @@ export default async function BrowsePage({
             </Link>
           </div>
 
-          {groups.length > 0 ? (
+          {dedupedGroups.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {groups.map((group) => (
+              {dedupedGroups.map((group) => (
                 <div key={group.id} className="bg-white rounded-xl border border-stone-200 hover:border-emerald-300 hover:shadow-md card-hover transition-all overflow-hidden">
                   <div className="p-5">
                     <div className="flex items-start justify-between gap-2 mb-3">
@@ -212,7 +223,7 @@ export default async function BrowsePage({
             </div>
           )}
 
-          {groups.length > 0 && (
+          {dedupedGroups.length > 0 && (
             <div className="mt-12 bg-emerald-600 rounded-xl p-6 md:p-8 text-center">
               <h3 className="text-xl font-bold text-white mb-2">Know a group that&apos;s not listed?</h3>
               <p className="text-emerald-100 text-sm mb-4">Help us grow the directory — it&apos;s free to add.</p>

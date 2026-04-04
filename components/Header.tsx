@@ -39,12 +39,6 @@ export default function Header({ transparent = false }: HeaderProps) {
               Browse
             </Link>
             <Link
-              href="/submit"
-              className="px-3.5 py-2 text-stone-600 hover:text-stone-900 text-sm font-medium rounded-lg hover:bg-stone-100 transition-all"
-            >
-              Add a Group
-            </Link>
-            <Link
               href="/blog"
               className="px-3.5 py-2 text-stone-600 hover:text-stone-900 text-sm font-medium rounded-lg hover:bg-stone-100 transition-all"
             >
@@ -52,10 +46,10 @@ export default function Header({ transparent = false }: HeaderProps) {
             </Link>
             <div className="w-px h-5 bg-stone-200 mx-2" />
             <Link
-              href="/browse"
+              href="/submit"
               className="px-4 py-2 text-white bg-emerald-600 rounded-lg text-sm font-semibold hover:bg-emerald-700 transition-colors"
             >
-              Find Groups
+              Add a Group
             </Link>
           </nav>
 
@@ -82,14 +76,11 @@ export default function Header({ transparent = false }: HeaderProps) {
               <Link href="/browse" className="px-3 py-2.5 text-stone-700 text-sm font-medium rounded-lg hover:bg-stone-100" onClick={() => setMobileMenuOpen(false)}>
                 Browse Groups
               </Link>
-              <Link href="/submit" className="px-3 py-2.5 text-stone-700 text-sm font-medium rounded-lg hover:bg-stone-100" onClick={() => setMobileMenuOpen(false)}>
-                Add a Group
-              </Link>
               <Link href="/blog" className="px-3 py-2.5 text-stone-700 text-sm font-medium rounded-lg hover:bg-stone-100" onClick={() => setMobileMenuOpen(false)}>
                 Blog
               </Link>
-              <Link href="/browse" className="mt-1 px-3 py-2.5 text-center text-white bg-emerald-600 rounded-lg text-sm font-semibold" onClick={() => setMobileMenuOpen(false)}>
-                Find Groups
+              <Link href="/submit" className="mt-1 px-3 py-2.5 text-center text-white bg-emerald-600 rounded-lg text-sm font-semibold" onClick={() => setMobileMenuOpen(false)}>
+                Add a Group
               </Link>
             </nav>
           </div>
