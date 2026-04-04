@@ -33,10 +33,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!sport || !borough) return { title: 'Page Not Found' };
 
+  const groups = getGroupsBySportAndBorough(parsed.sport, parsed.borough);
   const title = `${sport.displayName} in ${borough.displayName} | London Sports Community`;
-  const description = `Find ${sport.displayName.toLowerCase()} groups in ${borough.displayName}, London. Browse clubs, venues, and pickup games. Join a group this week — free directory.`;
+  const description = groups.length > 0
+    ? `Find ${groups.length} ${sport.displayName.toLowerCase()} ${groups.length === 1 ? 'group' : 'groups'} in ${borough.displayName}, London. Browse clubs, venues, and pickup games. Join a group this week — free directory.`
+    : `Find ${sport.displayName.toLowerCase()} groups in ${borough.displayName}, London. Browse clubs, venues, and pickup games. Join a group this week — free directory.`;
+  const url = `https://londonsportscommunity.co.uk/${parsed.sport}-${parsed.borough}`;
 
-  return { title, description, openGraph: { title, description, type: 'website' } };
+  return {
+    title,
+    description,
+    openGraph: { title, description, type: 'website', url },
+    twitter: { card: 'summary', title, description },
+    alternates: { canonical: url },
+  };
 }
 
 export default async function SportBoroughPage({ params }: PageProps) {

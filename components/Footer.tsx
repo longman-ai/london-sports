@@ -47,20 +47,22 @@ export default function Footer() {
           <div className="md:col-span-2">
             <h3 className="text-xs font-semibold text-stone-300 uppercase tracking-wider mb-4">Sports</h3>
             <ul className="space-y-2.5">
-              <li><Link href="/football-hackney" className="text-stone-400 hover:text-white text-sm transition-colors">Football</Link></li>
-              <li><Link href="/running-islington" className="text-stone-400 hover:text-white text-sm transition-colors">Running</Link></li>
-              <li><Link href="/padel-westminster" className="text-stone-400 hover:text-white text-sm transition-colors">Padel</Link></li>
-              <li><Link href="/tennis-kensington-chelsea" className="text-stone-400 hover:text-white text-sm transition-colors">Tennis</Link></li>
+              <li><Link href="/browse?sport=Football" className="text-stone-400 hover:text-white text-sm transition-colors">Football</Link></li>
+              <li><Link href="/browse?sport=Running" className="text-stone-400 hover:text-white text-sm transition-colors">Running</Link></li>
+              <li><Link href="/browse?sport=Padel" className="text-stone-400 hover:text-white text-sm transition-colors">Padel</Link></li>
+              <li><Link href="/browse?sport=Tennis" className="text-stone-400 hover:text-white text-sm transition-colors">Tennis</Link></li>
+              <li><Link href="/browse?sport=Basketball" className="text-stone-400 hover:text-white text-sm transition-colors">Basketball</Link></li>
+              <li><Link href="/browse?sport=Yoga" className="text-stone-400 hover:text-white text-sm transition-colors">Yoga</Link></li>
             </ul>
           </div>
 
           <div className="md:col-span-2">
-            <h3 className="text-xs font-semibold text-stone-300 uppercase tracking-wider mb-4">Boroughs</h3>
+            <h3 className="text-xs font-semibold text-stone-300 uppercase tracking-wider mb-4">Resources</h3>
             <ul className="space-y-2.5">
-              <li><Link href="/football-hackney" className="text-stone-400 hover:text-white text-sm transition-colors">Hackney</Link></li>
-              <li><Link href="/running-camden" className="text-stone-400 hover:text-white text-sm transition-colors">Camden</Link></li>
-              <li><Link href="/padel-westminster" className="text-stone-400 hover:text-white text-sm transition-colors">Westminster</Link></li>
-              <li><Link href="/padel-lambeth" className="text-stone-400 hover:text-white text-sm transition-colors">Lambeth</Link></li>
+              <li><Link href="/blog" className="text-stone-400 hover:text-white text-sm transition-colors">Blog</Link></li>
+              <li><Link href="/blog/best-padel-courts-london" className="text-stone-400 hover:text-white text-sm transition-colors">Best Padel Courts</Link></li>
+              <li><Link href="/blog/best-running-clubs-london-beginners" className="text-stone-400 hover:text-white text-sm transition-colors">Running Clubs Guide</Link></li>
+              <li><Link href="/submit" className="text-stone-400 hover:text-white text-sm transition-colors">Add Your Group</Link></li>
             </ul>
           </div>
         </div>

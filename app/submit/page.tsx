@@ -1,6 +1,17 @@
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import Link from "next/link"
+import { Metadata } from "next"
+import { BOROUGHS } from "@/data/boroughs"
+
+export const metadata: Metadata = {
+  title: "Add Your Sports Group | London Sports Community",
+  description: "List your sports group for free on London's community sports directory. Reach hundreds of Londoners looking to play. Reviewed within 24 hours.",
+  openGraph: {
+    title: "Add Your Sports Group | London Sports Community",
+    description: "List your sports group for free. Reach hundreds of Londoners looking to play.",
+  },
+}
 
 export default function SubmitGroupPage() {
   return (
@@ -70,19 +81,9 @@ export default function SubmitGroupPage() {
                   className="w-full px-3.5 py-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm text-stone-900 appearance-none bg-white cursor-pointer"
                 >
                   <option value="">Select a borough</option>
-                  <option value="Camden">Camden</option>
-                  <option value="Westminster">Westminster</option>
-                  <option value="Hackney">Hackney</option>
-                  <option value="Tower Hamlets">Tower Hamlets</option>
-                  <option value="Islington">Islington</option>
-                  <option value="Lambeth">Lambeth</option>
-                  <option value="Southwark">Southwark</option>
-                  <option value="Greenwich">Greenwich</option>
-                  <option value="Lewisham">Lewisham</option>
-                  <option value="Wandsworth">Wandsworth</option>
-                  <option value="Hammersmith and Fulham">Hammersmith and Fulham</option>
-                  <option value="Kensington and Chelsea">Kensington and Chelsea</option>
-                  <option value="Other">Other</option>
+                  {BOROUGHS.map((b) => (
+                    <option key={b.id} value={b.displayName}>{b.displayName}</option>
+                  ))}
                 </select>
               </div>
             </div>
