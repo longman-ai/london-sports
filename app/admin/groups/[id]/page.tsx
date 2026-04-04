@@ -2,6 +2,7 @@ import { auth } from "@/auth"
 import { redirect, notFound } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import AdminGroupEditor from "@/components/AdminGroupEditor"
+import AdminDeleteButton from "@/components/AdminDeleteButton"
 
 export default async function AdminGroupDetailPage({
   params,
@@ -170,6 +171,10 @@ export default async function AdminGroupDetailPage({
                   {new Date(group.updatedAt).toLocaleString()}
                 </p>
               </div>
+            </div>
+
+            <div className="flex gap-3 pt-4 border-t border-gray-200">
+              <AdminDeleteButton groupId={group.id} groupName={group.name} />
             </div>
 
             <AdminGroupEditor
