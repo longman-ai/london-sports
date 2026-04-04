@@ -1,20 +1,21 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { SPORTS } from '@/data/sports';
 import { GROUPS } from '@/data/groups';
 
-const sportIcons: Record<string, string> = {
-  football: '⚽',
-  basketball: '🏀',
-  tennis: '🎾',
-  badminton: '🏸',
-  running: '🏃',
-  padel: '🎾',
-  cricket: '🏏',
-  rugby: '🏉',
-  cycling: '🚴',
-  swimming: '🏊',
-  yoga: '🧘',
-  climbing: '🧗'
+const sportImages: Record<string, string> = {
+  football: '/images/sports/football.png',
+  basketball: '/images/sports/basketball.png',
+  tennis: '/images/sports/tennis.png',
+  badminton: '/images/sports/badminton.png',
+  running: '/images/sports/running.png',
+  padel: '/images/sports/padel.png',
+  cricket: '/images/sports/cricket.png',
+  rugby: '/images/sports/rugby.png',
+  cycling: '/images/sports/cycling.png',
+  swimming: '/images/sports/swimming.png',
+  yoga: '/images/sports/yoga.png',
+  climbing: '/images/sports/climbing.png',
 };
 
 const sportSubtitles: Record<string, string> = {
@@ -29,7 +30,7 @@ const sportSubtitles: Record<string, string> = {
   cycling: 'Group rides',
   swimming: 'Coached sessions',
   yoga: 'All styles',
-  climbing: 'Bouldering & rope'
+  climbing: 'Bouldering & rope',
 };
 
 // Count groups per sport
@@ -47,22 +48,34 @@ export default function SportSelector() {
           <Link
             key={sport.id}
             href={`/browse?sport=${encodeURIComponent(sport.displayName)}`}
-            className="group relative bg-white rounded-xl border border-stone-200 p-5 sm:p-6 hover:border-emerald-400 hover:shadow-md card-hover text-center"
+            className="group relative bg-white rounded-xl border border-stone-200 overflow-hidden hover:border-emerald-400 hover:shadow-md card-hover"
           >
-            <div className="text-4xl sm:text-5xl mb-3 group-hover:scale-110 transition-transform duration-200">
-              {sportIcons[sport.id]}
+            {/* Sport Image */}
+            <div className="relative h-28 sm:h-32 w-full overflow-hidden">
+              <Image
+                src={sportImages[sport.id]}
+                alt={`${sport.displayName} in London`}
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+              <h3 className="absolute bottom-2 left-3 text-sm sm:text-base font-semibold text-white drop-shadow-sm">
+                {sport.displayName}
+              </h3>
             </div>
-            <h3 className="text-sm sm:text-base font-semibold text-stone-900 group-hover:text-emerald-700 transition-colors">
-              {sport.displayName}
-            </h3>
-            <p className="text-xs text-stone-500 mt-1">
-              {sportSubtitles[sport.id]}
-            </p>
-            {count > 0 && (
-              <p className="text-xs text-emerald-600 font-medium mt-1.5">
-                {count} {count === 1 ? 'group' : 'groups'}
+
+            {/* Info */}
+            <div className="p-3 sm:p-4">
+              <p className="text-xs text-stone-500">
+                {sportSubtitles[sport.id]}
               </p>
-            )}
+              {count > 0 && (
+                <p className="text-xs text-emerald-600 font-medium mt-1">
+                  {count} {count === 1 ? 'group' : 'groups'}
+                </p>
+              )}
+            </div>
           </Link>
         );
       })}
