@@ -81,7 +81,10 @@ export default async function GroupDetailPage({
       addressCountry: 'GB',
     },
     ...(group.venue ? { location: { '@type': 'Place', name: group.venue } } : {}),
-    ...(group.sourceUrl ? { url: group.sourceUrl } : {}),
+    // Was using sourceUrl (internal scrape-provenance field, sometimes a
+    // Reddit thread/blog listicle) instead of contact (the club's real
+    // site) — fixed 2026-07-27 NovaList audit.
+    ...(group.contact && /^https?:\/\//i.test(group.contact) ? { url: group.contact } : {}),
   }
 
   return (
@@ -125,9 +128,11 @@ export default async function GroupDetailPage({
               </p>
             </div>
             <div className="flex gap-3">
-              {group.sourceUrl && (
+              {/* Was linking to sourceUrl instead of contact — fixed 2026-07-27
+                  NovaList audit. Guard against non-URL contact values. */}
+              {group.contact && /^https?:\/\//i.test(group.contact) && (
                 <a
-                  href={group.sourceUrl}
+                  href={group.contact}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-5 py-2.5 text-white bg-emerald-600 rounded-xl font-semibold hover:bg-emerald-700 transition-colors flex items-center gap-2"
@@ -270,6 +275,24 @@ export default async function GroupDetailPage({
                   className="w-full px-4 py-3 text-center text-stone-900 bg-white rounded-lg hover:bg-emerald-50 font-semibold text-sm transition-all block"
                 >
                   Add Your Group — Free
+                </Link>
+              </div>
+
+              {/* Claim listing — added 2026-07-27 NovaList audit. Starts the
+                  ownership relationship with group organisers now (lead
+                  capture for future featured listings / monetisation),
+                  routed through the same contact form + ContactMessage table
+                  used for general enquiries. */}
+              <div className="bg-white rounded-xl border border-stone-200 p-6 text-center">
+                <p className="text-sm font-semibold text-stone-900 mb-1">Is this your group?</p>
+                <p className="text-xs text-stone-500 mb-3">
+                  Claim this listing to keep details up to date.
+                </p>
+                <Link
+                  href={`/contact?claim=${encodeURIComponent(group.name)}`}
+                  className="inline-block text-sm font-medium text-emerald-600 hover:text-emerald-700"
+                >
+                  Claim this listing →
                 </Link>
               </div>
             </div>

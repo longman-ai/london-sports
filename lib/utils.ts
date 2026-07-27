@@ -71,3 +71,23 @@ export const formatBoroughName = (borough: BoroughType): string => {
 export const cn = (...classes: (string | undefined | null | false)[]): string => {
   return classes.filter(Boolean).join(' ');
 };
+
+/**
+ * Maps a borough's canonical displayName (from data/boroughs.ts, e.g.
+ * "Kensington & Chelsea") to the exact string stored in the Group.borough
+ * column in Postgres (e.g. "Kensington and Chelsea").
+ *
+ * Found during the 2026-07-27 NovaList audit: the homepage linked to
+ * `/browse?borough=Kensington %26 Chelsea` (URL-encoded ampersand) while the
+ * database stores "Kensington and Chelsea" — an exact-match filter, so that
+ * link silently returned zero results despite the borough having real
+ * listings. Every place that builds a `/browse?borough=...` link should run
+ * the borough displayName through this first.
+ */
+const DISPLAY_NAME_TO_DB_BOROUGH: Record<string, string> = {
+  'Kensington & Chelsea': 'Kensington and Chelsea',
+};
+
+export const toDbBoroughName = (displayName: string): string => {
+  return DISPLAY_NAME_TO_DB_BOROUGH[displayName] ?? displayName;
+};

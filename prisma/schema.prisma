@@ -75,6 +75,35 @@ enum SourceType {
   BULK_IMPORT
 }
 
+// Newsletter subscribers — added 2026-07-27 NovaList audit. Footer had a
+// disabled "Newsletter coming soon" form; this makes it functional using
+// infrastructure already in place (no new external provider dependency).
+// Export/sync to a proper ESP (Beehiiv/Resend broadcast, etc.) later once
+// there's a list worth mailing.
+model NewsletterSubscriber {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  subscribedAt DateTime @default(now())
+  unsubscribedAt DateTime?
+  source      String?  @default("footer")
+
+  @@index([email])
+}
+
+// Contact form submissions — added 2026-07-27 NovaList audit alongside the
+// new /contact page. Doubles as the intake mechanism for "claim your
+// listing" requests until a dedicated claim flow exists.
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String   @db.Text
+  createdAt DateTime @default(now())
+  handled   Boolean  @default(false)
+
+  @@index([handled])
+}
+
 // Admin user model
 model Admin {
   id        String   @id @default(cuid())

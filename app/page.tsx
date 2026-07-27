@@ -3,9 +3,10 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import HomeSearch from '@/components/HomeSearch';
 import Link from 'next/link';
-import { GROUPS } from '@/data/groups';
 import { SPORTS } from '@/data/sports';
 import { BOROUGHS } from '@/data/boroughs';
+import { getSiteStats, getRecentGroups } from '@/lib/stats';
+import { toDbBoroughName } from '@/lib/utils';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -20,30 +21,28 @@ const jsonLd = {
   },
 };
 
-// Compute real stats
-const totalGroups = GROUPS.length;
-const totalSports = SPORTS.length;
-const totalBoroughs = BOROUGHS.length;
+export default async function Home() {
+  // Live counts from Postgres — previously this page read from the static
+  // 48-entry data/groups.ts file (only 6 of 12 sports), while /browse read
+  // live from the database (160 entries, all 12 sports). That split caused
+  // the homepage to show contradictory numbers vs. /browse and left several
+  // sport cards showing no count at all. Fixed 2026-07-27 NovaList audit.
+  const stats = await getSiteStats();
+  const featuredGroups = await getRecentGroups(6);
 
-// Get unique boroughs that have groups
-const activeBoroughs = [...new Set(GROUPS.map(g => g.borough))];
+  const totalGroups = stats.totalGroups;
+  const totalSports = SPORTS.length;
+  const totalBoroughs = BOROUGHS.length;
 
-// Popular boroughs with group counts
-const boroughCounts = GROUPS.reduce((acc, g) => {
-  acc[g.borough] = (acc[g.borough] || 0) + 1;
-  return acc;
-}, {} as Record<string, number>);
-
-const topBoroughs = Object.entries(boroughCounts)
-  .sort(([, a], [, b]) => b - a)
-  .slice(0, 8)
-  .map(([borough, count]) => {
-    const b = BOROUGHS.find(br => br.name === borough);
-    return { name: borough, displayName: b?.displayName || borough, count, zone: b?.zone || '' };
-  });
-
-export default function Home() {
-  const featuredGroups = GROUPS.slice(0, 6);
+  const topBoroughs = BOROUGHS.map((b) => ({
+    name: b.name,
+    displayName: b.displayName,
+    count: stats.boroughCounts[toDbBoroughName(b.displayName)] || 0,
+    zone: b.zone,
+  }))
+    .filter((b) => b.count > 0)
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 8);
 
   return (
     <div className="min-h-screen bg-stone-50 overflow-x-hidden w-full">
@@ -118,7 +117,7 @@ export default function Home() {
                 {totalSports} sports across all {totalBoroughs} London boroughs — pick one and find a group this week
               </p>
             </div>
-            <SportSelector />
+            <SportSelector sportCounts={stats.sportCounts} />
           </div>
         </section>
 
@@ -137,7 +136,7 @@ export default function Home() {
               {topBoroughs.map((borough) => (
                 <Link
                   key={borough.name}
-                  href={`/browse?borough=${encodeURIComponent(borough.displayName)}`}
+                  href={`/browse?borough=${encodeURIComponent(toDbBoroughName(borough.displayName))}`}
                   className="group bg-stone-50 rounded-xl border border-stone-200 p-5 hover:border-emerald-400 hover:bg-emerald-50/50 card-hover text-center transition-all"
                 >
                   <p className="text-sm font-semibold text-stone-900 group-hover:text-emerald-700 transition-colors">
@@ -172,7 +171,7 @@ export default function Home() {
               {featuredGroups.map((group) => (
                 <Link
                   key={group.id}
-                  href={`/browse?sport=${encodeURIComponent(group.sport.charAt(0).toUpperCase() + group.sport.slice(1))}`}
+                  href={`/browse?sport=${encodeURIComponent(group.sport)}`}
                   className="bg-white rounded-xl border border-stone-200 p-5 hover:border-emerald-300 hover:shadow-md card-hover transition-all"
                 >
                   <div className="flex items-start justify-between gap-2 mb-2">

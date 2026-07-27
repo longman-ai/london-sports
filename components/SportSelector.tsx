@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { SPORTS } from '@/data/sports';
-import { GROUPS } from '@/data/groups';
 
 const sportImages: Record<string, string> = {
   football: '/images/sports/football.png',
@@ -33,17 +32,21 @@ const sportSubtitles: Record<string, string> = {
   climbing: 'Bouldering & rope',
 };
 
-// Count groups per sport
-const sportGroupCounts = GROUPS.reduce((acc, g) => {
-  acc[g.sport] = (acc[g.sport] || 0) + 1;
-  return acc;
-}, {} as Record<string, number>);
+interface SportSelectorProps {
+  // Live counts keyed by lowercase sport slug (from lib/stats.ts getSiteStats).
+  // Previously this component imported the static data/groups.ts file
+  // directly (only 48 entries covering 6 of 12 sports), so 6 sport cards
+  // always showed no count at all despite having real listings in Postgres.
+  // Fixed 2026-07-27 NovaList audit — counts are now passed down from a
+  // server component that reads live from the database.
+  sportCounts: Record<string, number>;
+}
 
-export default function SportSelector() {
+export default function SportSelector({ sportCounts }: SportSelectorProps) {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
       {SPORTS.map((sport) => {
-        const count = sportGroupCounts[sport.id] || 0;
+        const count = sportCounts[sport.id] || 0;
         return (
           <Link
             key={sport.id}

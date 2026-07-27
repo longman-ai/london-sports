@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
-import { GROUPS } from '@/data/groups';
 import { BOROUGHS } from '@/data/boroughs';
+import { getSiteStats } from '@/lib/stats';
 
 export const runtime = 'edge';
 export const alt = 'London Sports Community — Find people to play sport with in London';
@@ -8,8 +8,11 @@ export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
 export default async function Image() {
-  const groupCount = GROUPS.length;
-  const groupCountLabel = `${Math.floor(groupCount / 10) * 10}+`;
+  // Live count via Prisma Accelerate (HTTP-based, edge-safe) — previously
+  // read from the static data/groups.ts file, which had drifted out of sync
+  // with the live database. Fixed 2026-07-27 NovaList audit.
+  const stats = await getSiteStats();
+  const groupCountLabel = `${Math.floor(stats.totalGroups / 10) * 10}+`;
   const boroughCount = BOROUGHS.length;
 
   return new ImageResponse(

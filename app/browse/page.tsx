@@ -189,9 +189,14 @@ export default async function BrowsePage({
                     >
                       View Details
                     </Link>
-                    {group.sourceUrl && (
+                    {/* Was linking to sourceUrl (internal scrape-provenance field,
+                        sometimes a Reddit thread/blog listicle) instead of contact
+                        (the club's real site) — fixed 2026-07-27 NovaList audit.
+                        Guard against non-URL contact values (email/WhatsApp on
+                        pending user submissions) so we never render a broken link. */}
+                    {group.contact && /^https?:\/\//i.test(group.contact) && (
                       <a
-                        href={group.sourceUrl}
+                        href={group.contact}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="px-3 py-2 text-stone-600 bg-white border border-stone-200 rounded-lg hover:bg-stone-50 text-sm font-medium transition-colors"
