@@ -36,8 +36,38 @@ export default async function BlogArticle({ params }: Props) {
   const post = getBlogPost(slug);
   if (!post) notFound();
 
+  // BlogPosting schema so search engines/AI tools can surface author, date,
+  // and headline as rich results (added 2026-07-27 NovaList audit — blog
+  // posts previously had zero JSON-LD, only the homepage did).
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.metaDescription,
+    datePublished: post.date,
+    dateModified: post.date,
+    author: {
+      '@type': 'Organization',
+      name: post.author,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'London Sports Community',
+      url: 'https://londonsportscommunity.co.uk',
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://londonsportscommunity.co.uk/blog/${post.slug}`,
+    },
+    keywords: post.tags.join(', '),
+  };
+
   return (
     <div className="min-h-screen bg-stone-50 flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
       <main className="flex-1 w-full flex flex-col items-center">
         <article className="w-full max-w-[680px] px-6 sm:px-8 py-20">
