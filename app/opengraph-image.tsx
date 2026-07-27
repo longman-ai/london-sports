@@ -2,7 +2,13 @@ import { ImageResponse } from 'next/og';
 import { BOROUGHS } from '@/data/boroughs';
 import { getSiteStats } from '@/lib/stats';
 
-export const runtime = 'edge';
+// Was 'edge' — broke the Vercel Hobby build with a 1 MB edge bundle-size
+// limit once this route started importing lib/stats.ts (which pulls in the
+// Prisma client to get a live group count, added during the 2026-07-27
+// NovaList data-source-split fix). Switched to the Node runtime, which has
+// a 50 MB limit and is fully supported by next/og's ImageResponse since
+// Next.js 14. Fixed 2026-07-27 (fable-5 diagnosis).
+export const runtime = 'nodejs';
 export const alt = 'London Sports Community — Find people to play sport with in London';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
